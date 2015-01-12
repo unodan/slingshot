@@ -1,0 +1,36 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: phpmyadmin
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install phpMyAdmin, phpMyAdmin is a tool written in PHP, intended to handle the administration of MySQL over 
+#                the Web. phpMyAdmin supports a wide range of operations on MySQL, MariaDB databases. It can perform various
+#                tasks such as creating, modifying or deleting databases, tables, fields, rows, and can execute SQL statements 
+#                or managing users and permissions.
+#
+###############################################################################
+#
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE;
+	rm -f /etc/httpd/conf.d/phpMyAdmin.conf
+	[ "`is_on httpd`" == "1" ] && { service httpd restart; }
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE; 
+
+cat >> /etc/phpMyAdmin/config.inc.php << EOF
+
+$cfg['ForceSSL'] = true;
+
+EOF
+
+	sed -i "s#Require ip 127.0.0.1#Require ip $LOCAL_IP#"  /etc/httpd/conf.d/phpMyAdmin.conf
+	sed -i "s#Allow from 127.0.0.1#Allow from $LOCAL_IP#"  /etc/httpd/conf.d/phpMyAdmin.conf
+
+	[ "`is_on httpd`" == "1" ] && { systemctl restart httpd; } 
+}
+footer

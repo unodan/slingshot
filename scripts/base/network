@@ -1,0 +1,70 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: network
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: 
+#
+###############################################################################
+#
+SERVICE=network
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	[ "`is_on $SERVICE`" == "1" ] && { service $SERVICE stop; }
+
+	yum -y remove $PACKAGE; 
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	echo -e "\nRunning script network"
+
+	# Set host name and hosts clock time zone.
+	hostname $HOSTNAME
+	echo 'ZONE="America/Toronto"' > /etc/sysconfig/clock
+
+# Set DNS servers.
+cat > /etc/resolv.conf << EOF
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+EOF
+
+# Create static network interface file.
+cat > /etc/sysconfig/network-scripts/ifcfg-eth0 << EOF
+IPV6INIT="no"
+NAME="eth0"
+DEVICE="eth0"
+USERCTL="no"
+ONBOOT="yes"
+TYPE="Ethernet"
+BOOTPROTO="static"
+DOMAIN="$DOMAIN"
+NM_CONTROLLED="no"
+GATEWAY=$GW
+NETMASK=$NM
+IPADDR=$INET_IP
+HWADDR=$HW_ADDR
+DNS1=8.8.8.8
+DNS2=8.8.4.4
+EOF
+
+# Create network file.
+cat > /etc/sysconfig/network << EOF
+HOSTNAME=$HOSTNAME
+NETWORKING=yes
+EOF
+
+	# Disable NetworkManager Service.
+	systemctl stop NetworkManager
+	systemctl disable NetworkManager 
+
+	echo -e "\nRe-starting network, please wait..."
+	PROP=$(($PROP|$INSTALLED));
+
+	systemctl start $SERVICE;
+	systemctl enable $SERVICE;
+
+	echo -e "\nScript network finished...!"
+}
+footer

@@ -1,0 +1,50 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: system-user
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Add the default system user. 
+#
+###############################################################################
+SERVICE=
+
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	echo -e "\n\e[1;33mNOTICE: \e[0mRemoving user (\e[1;36m$USER_ID\e[0m) from system."
+	
+	[[ `cat /etc/passwd | grep "$USER_ID"` ]] && { 
+		userdel -r "$USER_ID";
+		[ "$?" == "0" ] && {	
+			groupdel $USER_ID;
+			echo -e "\e[1;37mSUCCESS: \e[0mUser (\e[1;36m$USER_ID\e[0m), home folder and mail mailbox have been removed.";
+		}
+	} || { echo -e "\n\e[1;33mWARNING: \e[0mUser (\e[1;36m$USER_ID\e[0m) does not exsits."; }
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	echo -e "\n\e[1;33mNOTICE: \e[0mAdding user (\e[1;36m$USER_ID\e[0m) to system.";
+	
+	[[ `cat /etc/passwd | grep "$USER_ID"` ]] && { 
+		userdel -r "$USER_ID"; 
+		[ "$?" == "0" ] && { [[ `cat /etc/group | grep "$USER_ID"` ]] && { groupdel $USER_ID; } }
+	}
+	
+	useradd -m -c "$USER_NAME" -s /bin/bash -d $USER_DIR "$USER_ID";
+	[ "$?" == "0" ] && {
+		echo $USER_PW | passwd --stdin "$USER_ID";
+		[ "$?" == "0" ] && {
+			sed -i "/root:/ c\root:\t\t$USER_ID" /etc/aliases;
+			chmod 750 /home/$USER_ID;
+			newaliases;
+			[ "$?" == "0" ] && { 
+				PROP=$(($PROP|$INSTALLED)); 
+				echo -e "\e[1;37mSUCCESS: \e[0mUser (\e[1;36m$USER_ID\e[0m) has been added to system users.";
+			} || {
+				echo -e "\e[1;31mERROR: \e[0mCould not add user (\e[1;36m$USER_ID\e[0m) to system users.";
+			}
+		}
+	}
+}
+footer

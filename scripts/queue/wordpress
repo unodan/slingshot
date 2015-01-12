@@ -1,0 +1,119 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: wordpress
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install WordPress, WordPress is an online, open source website creation tool written in PHP. WordPress is 
+#                probably the easiest and most powerful blogging and website content management system (or CMS). 
+#
+###############################################################################
+#
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && {
+	[[ -d $WP_INSTALL_DIR ]] && {
+		[ "$DOMAIN" != "`hostname | cut -d. -f 2-`" ] && {
+			sed -i "/^zone \"$DOMAIN\" {$/,/^};/d" /var/named/chroot/etc/named.conf
+			sed -i "/^#start-VH-$DOMAIN#$/,/^#end-VH-$DOMAIN#/d" /etc/httpd/conf/httpd.conf
+			rm -f /var/named/chroot/var/named/$DOMAIN.*
+			rm -rf $WP_INSTALL_DIR
+		} || {
+			[[ -d $WP_INSTALL_DIR ]] && {
+				rm -rf $WP_INSTALL_DIR && mkdir $WP_INSTALL_DIR && chown $USER_ID. $WP_INSTALL_DIR && chmod 750 $WP_INSTALL_DIR
+				sed -i "/^www/d" /var/named/chroot/var/named/$DOMAIN.hosts
+				echo removed, $WP_INSTALL_DIR
+			}
+		}
+		do_query "DROP DATABASE $DB_NAME;"
+		[ "`is_on named`" == "1" ] && { service named restart; }
+		[ "`is_on httpd`" == "1" ] && { service httpd restart; }
+	} || {
+		echo -e "\n\e[1;31mERROR\e[0m: Package (\e[1;36m$PACKAGE\e[0m) could not be found.\n";
+	}
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	[[ -d $WP_INSTALL_DIR/wp-content ]] && {
+		echo -e "\n\e[1;31mERROR\e[0m: Package (\e[1;36m$PACKAGE\e[0m) is already installed, first remove the package then install.\n";
+		exit 1;
+	}
+	pwd=`pwd`;
+	serialNumber=`date +'%C%y%m%d'`01
+
+	[[ ! -d $WP_INSTALL_DIR ]] && { mkdir -p $WP_INSTALL_DIR; }
+	cd $WP_INSTALL_DIR; 
+
+cat > .htaccess << EOF
+<Files wp-config.php>  
+order allow,deny  
+deny from all  
+</Files>
+
+<Files .htaccess>  
+order allow,deny  
+deny from all  
+</Files>
+
+# Block the include-only files.
+RewriteEngine On
+RewriteBase /
+RewriteRule ^wp-admin/includes/ - [F,L]
+RewriteRule !^wp-includes/ - [S=3]
+RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
+RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
+RewriteRule ^wp-includes/theme-compat/ - [F,L]
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+EOF
+
+	curl -s -O -L http://wordpress.org/latest.tar.gz
+	tar xzpf latest.tar.gz --strip 1
+	rval=$?; 
+	
+	[ "$rval" == "0" ] && {
+		echo -e "\nInstalling Wordpress and updating configuration files.\n";
+		rm latest.tar.gz ;
+		mv wp-config-sample.php wp-config.php;
+
+		sed -i "s/database_name_here/$DB_NAME/" wp-config.php;
+		sed -i "s/username_here/$DB_USR/" wp-config.php;
+		sed -i "s/password_here/$DB_USR_PW/" wp-config.php;
+
+		[ -n "$WP_DB_PREFIX" ] &&  { sed -i "/^\$table_prefix/ c\$table_prefix = '$WP_DB_PREFIX';" wp-config.php; }
+
+		curl -s -O https://api.wordpress.org/secret-key/1.1/salt;
+		while read line; do
+			a=`echo $line | cut -f1 -d','`
+			sed -i "/$a/c$line" wp-config.php
+		done < ./salt
+		rm ./salt;
+
+		mkdir -p logs wp-content/{uploads,upgrade};
+		chown -R $USER_ID. *;
+		chmod 640 $WP_INSTALL_DIR/.htaccess;
+		chmod 770 wp-content/uploads;
+		chown -R $USER_ID. $WP_INSTALL_DIR;
+		cd $pwd;
+		
+		do_query "CREATE DATABASE $DB_NAME;"
+		do_query "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USR'@'localhost' IDENTIFIED BY '$DB_USR_PW';"
+		do_query "FLUSH PRIVILEGES;"
+
+		[ -f "$WP_INSTALL_DIR/index.html" ] && { mv "$WP_INSTALL_DIR/index.html" "$WP_INSTALL_DIR/index.html.bak"; }
+
+		systemctl restart httpd;
+		
+		PROP=$(($PROP|$INSTALLED));
+	} || { echo -e "\nError:$?, Script:$PACKAGE Config File:$CONFIG\nCould not extract files from archive."; exit $?; } 
+}
+footer

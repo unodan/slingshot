@@ -1,0 +1,73 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: Constants
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Define constants used for script run actions and results.  
+#
+###############################################################################
+#
+# File locations.
+###############################################################################
+RPM=/bin/rpm
+YUM=/usr/bin/yum
+CHKCONFIG=/sbin/chkconfig
+SYSTEMCTL=/usr/bin/systemctl
+
+# Actions
+###############################################################################
+ACTION=0
+REMOVE=$(( 1 << 0 ))
+INSTALL=$(( 1 << 1 ))
+RESTART=$(( 1 << 2 ))
+UPDATE=$(( 1 << 3 ))
+
+# Properties
+###############################################################################
+PROP=0
+INSTALLED=$(( 1 << 0))
+ENABLE=$(( 1 << 1 ))
+SERVICE_ON=$(( 1 << 2 ))
+
+# Error codes (ERR_CODE)
+###############################################################################
+ERR_CODE=0
+SUCCESS=$(( 1 << 0 ))
+ERROR=$(( 1 << 1 ))
+WARNING=$(( 1 << 2 ))
+REMOVE_FAIL=$(( 1 << 3 ))
+INSTALL_FAIL=$(( 1 << 4 ))
+NOT_INSTALLED=$(( 1 << 5 ))
+ALREADY_INSTALLED=$(( 1 << 6 ))
+STOP=$(( 1 << 7 ))
+CONTINUE=$(( 1 << 8 ))
+ENABLE_FAIL=$(( 1 << 9 ))
+DISABLE_FAIL=$(( 1 << 10 ))
+
+# Runtime settings (RUNTIME)
+###############################################################################
+EXIT_ON_ERROR=true
+EXIT_ON_WARNING=
+INSTALL_UPDATE=$(( 1 << 2 ))
+INSTALL_RESTORE=$(( 1 << 3 ))
+INSTALL_DESTRUCTIVE=$(( 1 << 4 ))
+
+RUNTIME=$(($INSTALL_UPDATE))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

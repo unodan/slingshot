@@ -1,0 +1,40 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: fail2band
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install fail2ban, Fail2ban is an intrusion prevention software framework which protects computer servers from 
+#                brute-force attacks. Written in the Python programming language, it is able to run on POSIX systems that have 
+#                an interface to a packet-control system or firewall installed locally, for example, iptables or TCP Wrapper.
+#
+###############################################################################
+#
+SERVICE=fail2ban
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE; 
+	rm -rf /etc/fail2ban
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE; 
+
+	cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+	sed -i "/^ignoreip/ c\ignoreip = 127.0.0.1/8 $LOCAL_IP" /etc/fail2ban/jail.local
+	sed -i "/^bantime/ c\bantime = 86400" /etc/fail2ban/jail.local
+	sed -i "/^findtime/ c\findtime = 3600" /etc/fail2ban/jail.local
+	sed -i "/^maxretry/ c\maxretry = 3" /etc/fail2ban/jail.local
+
+cat >> /etc/fail2ban/jail.local << EOF
+
+[sshd]
+enabled = true
+EOF
+
+	systemctl start $SERVICE;
+	systemctl enable $SERVICE;
+	systemctl restart rsyslog;
+}
+footer

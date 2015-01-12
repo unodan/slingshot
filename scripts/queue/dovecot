@@ -1,0 +1,60 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: dovecot
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install Dovecot, Dovecot is an open source IMAP and POP3 email server, written with security primarily in mind. 
+#
+###############################################################################
+#
+SERVICE=dovecot
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE; 
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE;
+	sed -i '/^#listen =/ c\listen = *' /etc/dovecot/dovecot.conf 
+	sed -i '/^#protocols/ c\protocols = imap pop3 lmtp' /etc/dovecot/dovecot.conf
+
+
+	sed -i -e "/^#disable_plaintext_auth =/{i\disable_plaintext_auth = no" -e ':a;$q;n;ba;}' /etc/dovecot/conf.d/10-auth.conf
+	sed -i '/^auth_mechanisms =/ c\auth_mechanisms = plain login' /etc/dovecot/conf.d/10-auth.conf
+
+
+	sed -i "/^#ssl =/ c\ssl = yes"	/etc/dovecot/conf.d/10-ssl.conf
+
+	sed -i "/^#ssl =/ c\ssl = yes"	/etc/dovecot/conf.d/10-ssl.conf
+	sed -i "/^ssl_cert =/ c\ssl_cert = </etc/pki/tls/certs/$DOMAIN.crt" /etc/dovecot/conf.d/10-ssl.conf
+	sed -i "/^ssl_key =/ c\ssl_key = </etc/pki/tls/private/$DOMAIN.key" /etc/dovecot/conf.d/10-ssl.conf
+	sed -i "/^#ssl_cipher_list =/ c\ssl_cipher_list = ALL:!LOW:!SSLv2:!EXP:!aNULL" /etc/dovecot/conf.d/10-ssl.conf
+
+
+	sed -i '/^#mail_location =/ c\mail_location = maildir:~/Maildir' /etc/dovecot/conf.d/10-mail.conf
+	
+	sed -i "/unix_listener \/var\/spool\/postfix\/private\/auth {/,/}/d" /etc/dovecot/conf.d/10-master.conf
+	tmp_file=".tmp.$$"
+
+cat > $tmp_file << EOF
+unix_listener /var/spool/postfix/private/auth {
+mode = 0666
+user = postfix
+group = postfix
+}
+
+EOF
+	sed -i -e "/# Postfix smtp-auth/ r $tmp_file" /etc/dovecot/conf.d/10-master.conf
+	rm -f $tmp_file;
+
+	#sed -i '/#pop3_uidl_format =/ c\pop3_uidl_format = %08Xu%08Xv' /etc/dovecot/conf.d/20-pop3.conf
+	#sed -i '/#pop3_client_workarounds =/ c\pop3_client_workarounds = outlook-no-nuls oe-ns-eoh' /etc/dovecot/conf.d/20-pop3.conf
+
+	rm -rf /etc/pki/dovecot/
+	
+	systemctl start $SERVICE;
+	systemctl enable $SERVICE;
+}
+footer

@@ -1,0 +1,54 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: httpd
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install Apache web server, The Apache HTTP Server is a public-domain open source Web server.
+#                The Apache Web server provides a full range of Web server features, including CGI, SSL, and virtual domains. 
+#                Apache also supports plug-in modules for extensibility
+#
+###############################################################################
+#
+SERVICE=httpd
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE;
+	[ -d /etc/httpd/ ] && rm -rf /etc/httpd/
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE; 
+	
+	rm -f /etc/httpd/conf.d/welcome.conf
+	
+	[ ! -d $DOC_ROOT ] && { mkdir -p $DOC_ROOT; }
+	chown -R $USER_ID. /home/$USER_ID/www;
+	usermod -a -G $USER_ID apache
+
+	sed -i "/^ServerAdmin / c\ServerAdmin $SERVER_ADMIN_EMAIL" /etc/httpd/conf/httpd.conf
+	sed -i "/^#ServerName / c\ServerName $SERVER_NAME" /etc/httpd/conf/httpd.conf
+	sed -i "/DirectoryIndex index.html / c\    DirectoryIndex index.html index.cgi index.php" /etc/httpd/conf/httpd.conf
+	sed -i "s#^DocumentRoot \"/var/www/html\"#DocumentRoot \"$DOC_ROOT\"#" /etc/httpd/conf/httpd.conf
+	sed -i "s#^<Directory \"/var/www/html\">#<Directory \"$DOC_ROOT\">#" /etc/httpd/conf/httpd.conf
+	sed -i "s#AllowOverride None#AllowOverride All#" /etc/httpd/conf/httpd.conf 
+
+cat >> /etc/httpd/conf/httpd.conf << EOF
+ServerTokens Prod
+KeepAlive On
+EOF
+
+# Test page to see if Apache is working correctly.
+cat > $DOC_ROOT/index.html << EOF
+<html>
+	<body>
+		<div><h1 style="width: 100%; text-align: center;">Apache Test Page</h1></div>
+	</body>
+</html>
+EOF
+
+	systemctl start $SERVICE;
+	systemctl enable $SERVICE;
+}
+footer

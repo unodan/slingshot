@@ -1,0 +1,56 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: extras
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: This script sequences a series of scripts to install. 
+#
+###############################################################################
+#
+source $BASE/settings
+source constants
+source functions;
+
+action=installer
+que=(
+	"epel-release"
+	"fail2ban"
+	"mkkeys" 
+	"mod_ssl"
+	"bind"
+	"postfix"
+	"dovecot"
+	"mailx"
+	"proftpd"
+	"awstats"
+	"webmin"
+	"phpmyadmin"
+	"wordpress"
+);
+
+[ "$action" == "installer" ] && { action=$1; packages="${que[@]}"; } || { packages="$@"; }
+
+[ "$action" == "install" ] || [ "$action" == "remove" ] && {
+
+	case $action in 
+		install)		ACTION=$(($ACTION|$INSTALL)); ;;
+		remove)	ACTION=$(($ACTION|$REMOVE)); ;;
+	esac
+
+	[ ! -d ../logs ] && mkdir ../logs;
+    
+	for PACKAGE in $packages; do
+		[ "`is_installed queue/$PACKAGE`" == "0" ] && [ ! -f queue/$PACKAGE ] && {
+			echo -e "\n\e[1;31m================================================================================\e[0m"
+			echo -e "\e[1;31m= ERROR\e[0m: Could not find srcipt (\e[1;36m$PACKAGE\e[0m).";
+			echo -e "\e[1;31m================================================================================\e[0m\n"
+		} || {
+			[ "`is_installed queue/$PACKAGE`" == "1" ] && { PROP=$((0|$INSTALLED)); } || { PROP=0; ERR_CODE=0; } 
+			source ./queue/$PACKAGE 2> ../logs/$PACKAGE.err | tee ../logs/$PACKAGE.log;
+			[ "$ERR_CODE" != "0" ] && { echo -e "Package (\e[1;36m$PACKAGE\e[0m) finished with errors.\n" >> ../logs/packages.err; }
+		}
+		[ "$(basename $0)" != "installer" ] && break; 
+	done
+}

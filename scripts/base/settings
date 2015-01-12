@@ -1,0 +1,87 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: settings
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# AUTHOR_EMAIL=danhuckson@gmail.com 
+# Purpose: Set runtime variables needed for the various scripts. 
+#           These variables must be set before the install script is run.
+#
+###############################################################################
+#
+# Path to location of the scripts.
+SCRIPTS=`pwd`;
+SCRIPTS=~/scripts
+
+# Server time zone.
+TIME_ZONE="America/Toronto"
+
+# User with access rights to modify system files.
+ADM_USR=root
+
+# Default user information.
+USER_ID=
+USER_PW=
+USER_NAME=
+USER_DIR=/home/$USER_ID
+
+# Server network settings.
+HOSTNAME=
+DOMAIN=
+GW=xxx.xxx.xxx.xxx
+NM=xxx.xxx.xxx.xxx
+INET_IP=xxx.xxx.xxx.xxx
+LOCAL_IP=xxx.xxx.xxx.xxx
+
+[[ $LOCAL_IP != "`curl -s ipinfo.io/ip`" ]] && {
+	BASE=$SCRIPTS/base
+	line=`ip a show eth0 | grep 'link/ether'` 2> /dev/null
+	HW_ADDR=`echo ${line,,} | cut -f2 -d' '`
+	NETWORKS="127.0.0.0/8, xxx.xxx.xxx.xxx/xx"
+}
+
+# HTTP server settings.
+HTTP_SERVICE=httpd
+SERVER_NAME=www.$DOMAIN
+SERVER_ADMIN_EMAIL=root@localhost
+DOC_ROOT=$USER_DIR/www/$DOMAIN/public_html
+
+# Certificate Information
+C=CA
+ST=Ontario
+L=Hamilton
+O="You.com"
+OU="Information Technology Services"
+CN="www.$DOMAIN"
+E="me@$DOMAIN"
+
+# Name server settings
+MS1_NAME=mail
+
+NS1_IP=$INET_IP
+NS1_NAME=ns1
+NS1_DOMAIN=$DOMAIN
+
+NS2_IP=$INET_IP
+NS2_NAME=ns2
+NS2_DOMAIN=$DOMAIN
+
+NS3_IP=$INET_IP
+NS3_NAME=ns3
+NS3_DOMAIN=$DOMAIN
+
+# WordPress web server settings
+WP_DB_PREFIX=wp_
+WP_INSTALL_DIR=$USER_DIR/www/$DOMAIN/public_html
+
+DB_NAME="`echo $DOMAIN | cut -f1 -d.`"
+DB_ADM=root
+DB_ADM_PW=$USER_PW
+DB_USR=$USER_ID
+DB_USR_PW=$USER_PW
+
+# Time zone setting.
+TIME_ZONE="America/Toronto"
+

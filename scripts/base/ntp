@@ -1,0 +1,48 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: ntp
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install NTP, Network Time Protocol (NTP) is a networking protocol for clock synchronization between 
+#                computer systems over packet-switched, variable-latency data networks.
+#
+###############################################################################
+#
+SERVICE=ntpd
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	[ "`is_on $SERVICE`" == "1" ] && { service $SERVICE stop; }
+
+	yum -y remove $PACKAGE; 
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE;
+	[ "$?" == "0" ] && {
+		for i in 0 1 2 3 4; do
+			sed -i "s/0.centos.pool.ntp.org/$i.north-america.pool.ntp.org/" /etc/ntp.conf
+		done;
+
+		for i in 0 1 2 3 4; do
+			echo -e "\n\e[1;33mNOTICE: \e[0mSynchronizing time with server (\e[1;36m$i.north-america.pool.ntp.org\e[0m).\n"
+			ntpdate $i.north-america.pool.ntp.org; rval=$?;
+			[ "$rval" == "0" ] && {
+				echo -e "\n\e[1;37mSUCCESS: \e[0mConnected to and synchronized with time server (\e[1;36m$i.north-america.pool.ntp.org\e[0m)."
+				break;
+			}
+		done;
+
+		cp -f /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
+		ln -sf ../usr/share/zoneinfo/America/Toronto /etc/localtime
+
+		[ "$rval" != "0" ] && { echo -e "\n\e[1;31mERROR: \e[0mCould not connected with time servers."; }
+
+		systemctl start $SERVICE;
+		systemctl enable $SERVICE;
+
+		echo -e "\n\e[1;37m"; date; 
+	}
+}
+footer

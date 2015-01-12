@@ -1,0 +1,87 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: awstats
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install Awstats, AWStats is a powerful and feature full tool that generates advanced web, streaming, 
+#                ftp or mail server statistics, graphically. This log analyzer works as a CGI or from command line and shows 
+#                you all possible information your log contains, in few graphical web pages.
+#
+###############################################################################
+#
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE;
+	[ "$?" != "0" ] && { STATUS=$ERROR; } || { 
+		rm -rf /etc/awstats/;
+		rm -rf /usr/share/awstats;
+		rm -f /etc/httpd/conf.d/awstats.conf;
+	}
+	[ "`is_on httpd`" == "1" ] && { service httpd restart; }
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE;
+
+cat > /usr/share/awstats/wwwroot/.htaccess << EOF
+#SSLOptions +StrictRequire
+SSLRequireSSL
+SSLRequire %{HTTP_HOST} eq "www.$DOMAIN"
+
+AuthUserFile /usr/share/awstats/wwwroot/.htpasswd
+AuthType Basic
+AuthName "You must have a user name and password to access this site."
+Require valid-user
+
+ErrorDocument 403 https://www.$DOMAIN/awstats/awstats.pl
+EOF
+
+	htpasswd -cb /usr/share/awstats/wwwroot/.htpasswd $USER_ID $USER_PW 2> /dev/null;
+
+	cp /etc/awstats/awstats.localhost.localdomain.conf /etc/awstats/awstats.www.$DOMAIN.conf;
+
+	sed -i "/HostAliases=/ c\HostAliases=\"$DOMAIN www.$DOMAIN 127.0.0.1 localhost\"" /etc/awstats/awstats.www.$DOMAIN.conf;
+	sed -i "/^SiteDomain=/ c\SiteDomain=$DOMAIN" /etc/awstats/awstats.www.$DOMAIN.conf;
+
+cat > /etc/httpd/conf.d/awstats.conf << EOF
+#
+# Content of this file, with correct values, can be automatically added to
+# your Apache server by using the AWStats configure.pl tool.
+#
+
+# If using Windows and Perl ActiveStat, this is to enable Perl script as CGI.
+#ScriptInterpreterSource registry
+
+#
+# Directives to allow use of AWStats as a CGI
+#
+Alias /awstatsclasses "/usr/share/awstats/wwwroot/classes/"
+Alias /awstatscss "/usr/share/awstats/wwwroot/css/"
+Alias /awstatsicons "/usr/share/awstats/wwwroot/icon/"
+ScriptAlias /awstats/ "/usr/share/awstats/wwwroot/cgi-bin/"
+
+#
+# This is to permit URL access to scripts/files in AWStats directory.
+#
+<Directory "/usr/share/awstats/wwwroot">
+    AllowOverride AuthConfig FileInfo
+    DirectoryIndex awstats.pl
+    Options ExecCGI
+    Order deny,allow
+    Allow from all
+</Directory>
+
+# Additional Perl modules
+<IfModule mod_env.c>
+    SetEnv PERL5LIB /usr/share/awstats/lib:/usr/share/awstats/plugins
+</IfModule>
+
+Alias /report "/usr/share/awstats/wwwroot/"
+EOF
+
+	rm -f /etc/awstats/awstats.localhost.localdomain.conf /etc/awstats/awstats.`hostname -s`.$DOMAIN.conf
+	[ "`is_on httpd`" == "1" ] && { systemctl restart httpd; } 
+}
+footer

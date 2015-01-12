@@ -1,0 +1,21 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: mailx
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install mails. mailx is a Unix utility program for sending
+#          and receiving mail, also known as a Mail User Agent program.
+#
+###############################################################################
+#
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE; 
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE;
+}
+footer

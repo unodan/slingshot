@@ -1,0 +1,220 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: bind
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install bind, BIND (Berkely Internet Name Domain) is used for translating domain names into IP addresses. 
+#
+###############################################################################
+#
+SERVICE=named
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove "`echo $PACKAGE{,-chroot,-utils,-libs}`"; 	
+	[[ -d /var/named ]] && rm -rf /var/named
+	[[ -f /etc/sysconfig/named.rpmsave ]] && rm -f /etc/sysconfig/named.rpmsave
+	[[ -f /etc/rndc.key ]] && rm -f /etc/rndc.key
+	
+cat > /etc/resolv.conf << EOF
+search $DOMAIN
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+EOF
+
+	sed -i "s#^DNS1=$NS1_IP#DNS1=8.8.8.8#"  /etc/sysconfig/network-scripts/ifcfg-eth0
+	sed -i "s#^DNS2=$NS2_IP#DNS1=8.8.4.4#"  /etc/sysconfig/network-scripts/ifcfg-eth0
+
+	systemctl restart network
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && {	
+	ns1_rev_ip=`rev_ip $NS1_IP`
+	ns2_rev_ip=`rev_ip $NS2_IP`
+	ns3_rev_ip=`rev_ip $NS3_IP`
+	rev_net=`rev_ip $INET_IP | cut -f2- -d.`
+	
+	yum -y install "`echo $PACKAGE{,-chroot,-utils,-libs}`";
+
+	chmod 755 /var/named/
+	chmod 755 /var/named/chroot/
+	chmod 755 /var/named/chroot/var/
+	chmod 755 /var/named/chroot/var/named/
+	chmod 755 /var/named/chroot/var/run/
+	chmod 755 /var/named/chroot/var/run/named/
+	
+	mkdir /var/named/chroot/var/named/dynamic
+	chmod 775 /var/named/chroot/var/named/dynamic
+	chown root:named /var/named/chroot/var/named/dynamic
+	
+	pwd=`pwd`
+	cd /var/named/chroot/var/named/
+	[[ ! -d /var/named/chroot/var/named/chroot ]] && ln -s ../../ chroot
+	serialNumber=`date +'%C%y%m%d'`01
+	cd $pwd
+	
+cat > /var/named/chroot/etc/named.conf << EOF
+include "/etc/rndc.key";
+
+options {
+	version "Not available";
+	directory "/var/named/chroot/var/named";
+	pid-file "/var/run/named/named.pid";
+	allow-query { localhost; };
+	allow-transfer { localhost; };
+	recursion yes;
+	dnssec-enable yes;
+	dnssec-validation yes;
+	dnssec-lookaside auto;
+	dump-file               "/var/log/cache_dump.db";
+	statistics-file         "/var/log/named_stats.txt";
+	memstatistics-file      "/var/log/named_mem_stats.txt";
+	managed-keys-directory	"/var/named/dynamic";
+};
+
+controls {
+	inet 127.0.0.1 allow { localhost; } keys { "rndc-key"; };
+};
+
+zone "." {
+	type hint;
+	file "/etc/db.cache";
+};
+
+zone "localhost" IN {
+	type master;
+	file "/var/named/localhost.hosts";
+	allow-update { localhost; };
+};
+
+zone "0.0.127.in-addr.arpa" IN {
+	type master;
+	file "/var/named/localhost.rev";
+	allow-update { localhost; };
+};
+
+zone "$DOMAIN" {
+	type master;
+	file "/var/named/$DOMAIN.hosts";
+	allow-query { any; };
+	allow-update { localhost; };
+};
+
+zone "$rev_net.in-addr.arpa" {
+	type master;
+	file "/var/named/$DOMAIN.rev";
+	allow-update { localhost; };
+	allow-query { any; };
+};
+EOF
+
+cat > /var/named/chroot/var/named/$DOMAIN.hosts << EOF
+\$ORIGIN $DOMAIN.
+\$ttl 86400
+@	IN	SOA	$NS1_NAME.$NS1_DOMAIN. root.$NS1_DOMAIN. (
+		$serialNumber
+		6H
+		1H
+		3W
+		90M )
+
+@							IN        NS        $NS1_NAME.$NS1_DOMAIN.
+@							IN        NS        $NS2_NAME.$NS2_DOMAIN.
+@							IN        NS        $NS3_NAME.$NS3_DOMAIN.
+@							IN        MX        10 $MS1_NAME.$DOMAIN.
+;
+$NS1_DOMAIN.             IN        A         $INET_IP
+$NS1_NAME.$NS1_DOMAIN.   IN        A         $NS1_IP
+$NS2_NAME.$NS2_DOMAIN.   IN        A         $NS2_IP
+$NS3_NAME.$NS3_DOMAIN.   IN        A         $NS3_IP
+$MS1_NAME.$DOMAIN.       IN        A         $INET_IP
+ftp	IN	CNAME		$NS1_NAME.$DOMAIN.
+www	IN	CNAME		$NS1_NAME.$DOMAIN.
+EOF
+
+cat > /var/named/chroot/var/named/$DOMAIN.rev << EOF
+\$ORIGIN $rev_net.in-addr.arpa.
+\$ttl 86400
+@	IN	SOA	$NS1_NAME.$NS1_DOMAIN. root.$NS1_DOMAIN. (
+		$serialNumber
+		6H
+		1H
+		3W
+		90M )
+
+@		IN	NS			$NS1_NAME.$NS1_DOMAIN.
+@		IN	NS			$NS2_NAME.$NS2_DOMAIN.
+@		IN	NS			$NS3_NAME.$NS3_DOMAIN.
+@		IN	MX 10		$NS1_NAME.$DOMAIN.
+$ns1_rev_ip.in-addr.arpa. 	IN 	PTR 	$NS1_NAME.$NS1_DOMAIN.
+$ns2_rev_ip.in-addr.arpa. 	IN 	PTR 	$NS2_NAME.$NS2_DOMAIN.
+$ns3_rev_ip.in-addr.arpa. 	IN 	PTR 	$NS3_NAME.$NS3_DOMAIN.
+EOF
+
+cat > /var/named/chroot/var/named/localhost.hosts << EOF
+\$ORIGIN localhost.
+\$TTL 86400
+@	IN	SOA	$NS1_NAME.$NS1_DOMAIN. root.$NS1_DOMAIN. (
+		$serialNumber
+		6H
+		1H
+		3W
+		90M )
+
+@	 	IN 	NS	 $NS1_NAME.$NS1_DOMAIN.
+;
+localhost. 	IN 	A 	127.0.0.1
+EOF
+
+cat > /var/named/chroot/var/named/localhost.rev << EOF
+\$ORIGIN 0.0.127.in-addr.arpa.
+\$TTL 86400
+@	IN	SOA	$NS1_NAME.$NS1_DOMAIN. root.$NS1_DOMAIN. (
+		$serialNumber
+		6H
+		1H
+		3W
+		90M )
+
+@ 			IN 	NS	 $NS1_NAME.$NS1_DOMAIN.
+;
+1.0.0.127.in-addr.arpa. 	IN 	PTR 	 localhost.
+EOF
+
+	curl -s -O ftp://ftp.rs.internic.net/domain/db.cache
+	[ "$?" == "0" ] && { 
+		mv db.cache /var/named/chroot/etc/db.cache
+	} || {
+		echo -e "\e[1;33mERROR: \e[0mCould not download file (ftp://ftp.rs.internic.net/domain/db.cache)."; 
+	}
+	
+	chown root:named /var/named/chroot/etc/{named.conf,db.cache}
+	chown root:named /var/named/chroot/var/named/{$DOMAIN.hosts,$DOMAIN.rev,localhost.hosts,localhost.rev}	
+	rm -rf /etc/named*
+
+	sed -i "/DNS/d" /etc/sysconfig/network-scripts/ifcfg-eth0
+
+cat > /etc/resolv.conf << EOF
+options rotate
+search $DOMAIN
+domain $DOMAIN
+nameserver $NS1_IP
+nameserver $NS2_IP
+nameserver $NS3_IP
+EOF
+
+cat >> /etc/sysconfig/network-scripts/ifcfg-eth0 << EOF
+DNS1=$NS1_IP
+DNS2=$NS2_IP
+DNS3=$NS3_IP
+EOF
+
+	systemctl start named-chroot
+	systemctl enable named-chroot
+
+	systemctl restart network
+	
+	[ "$?" == "0" ] && { PROP=$(($PROP|$INSTALLED)); }
+}
+footer
