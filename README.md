@@ -18,11 +18,20 @@ install	-	Starts the local installation from a Linux system.
 setup	-	Starts the installation on the target system. This script is started by install script stated above or can be started manually on the target system.
 installer	-	The script that queues the installation and configuration scripts that get installed on the host target system.
 user	-	Sets up the default user account on the target system.
+
 ntp	-	Installs and configures the NTP client.
+
 network	-	Configures the network interface and network settings.
+
 httpd	-	Installs and configures the Apache Web Server.
+
 mariadb	-	Installs and configures the MariaDB SQL Server.
+
 php	-	Installs and configures PHP.
+
 constants	-	Constants used for controlling program execution and error handling.
+
 functions	-	Helper functions used by various scripts.
+
 template	-	A template script used as a starting point for new scripts modules.
+
