@@ -1,4 +1,5 @@
 # slingshot
+
 Automated Linux Package Installer
 
 Slingshot is a script to automate the installation and configuration of Linux software packages. Slingshot has and uses a template/messaging system.
@@ -38,4 +39,5 @@ constants	-	Constants used for controlling program execution and error handling.
 functions	-	Helper functions used by various scripts.
 
 template	-	A template script used as a starting point for new scripts modules.
+
 
