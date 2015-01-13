@@ -17,9 +17,9 @@ settings	-	Custom settings file, unique to your setup.
 
 install	-	Starts the local installation from a Linux system.
 
-setup	-	Starts the installation on the target system. This script is started by install script stated above or can be started manually on the target system.
+setup	-	This script is started by install script stated above or can be started manually.
 
-installer	-	The script that queues the installation and configuration scripts that get installed on the host target system.
+installer	-	The module that queues scripts that get installed on the host target system.
 
 user	-	Sets up the default user account on the target system.
 
