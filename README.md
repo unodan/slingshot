@@ -19,6 +19,7 @@ Placing a module in the scripts directory means that script will be include in t
 Below is the list of files that make up the base install of Slingshot. This list is the minimum set of files needed for a basic (LAMP) Slingshot installation.
 
 <table>
+<tr><td>File</td><td>Description</td>
 <tr><td>settings</td><td>Custom settings file, unique to your setup.</td>
 <tr><td>install</td><td>Starts the local installation from a Linux system.</td>
 <tr><td>setup</td><td>This script is started by install script stated above or can be started manually.</td>
