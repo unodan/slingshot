@@ -14,9 +14,13 @@ The base install of Slingshot consists of 12 scripts, plus the install script. P
 Below is the list of files that make up the base install of Slingshot. This list is the minimum set of files needed for a basic (LAMP) Slingshot installation.
 
 settings	-	Custom settings file, unique to your setup.
+
 install	-	Starts the local installation from a Linux system.
+
 setup	-	Starts the installation on the target system. This script is started by install script stated above or can be started manually on the target system.
+
 installer	-	The script that queues the installation and configuration scripts that get installed on the host target system.
+
 user	-	Sets up the default user account on the target system.
 
 ntp	-	Installs and configures the NTP client.
