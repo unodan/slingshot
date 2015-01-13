@@ -1,6 +1,6 @@
 # slingshot
 
-Automated Linux Package Installer
+Automated Linux Package Installer for CentOS 7
 
 Slingshot is a script to automate the installation and configuration of Linux software packages. Slingshot has and uses a template/messaging system.
 
