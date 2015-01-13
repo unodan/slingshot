@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: dovecot
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install Dovecot, Dovecot is an open source IMAP and POP3 email server, written with security primarily in mind. 
 #
 ###############################################################################

@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: mariadb
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install MariaDB, MariaDB is an enhanced, drop-in replacement for MySQL, it's a community-developed fork 
 #                of the MySQL relational database management system. The intent is also to maintain high compatibility with
 #                MySQL, ensuring a "drop-in" replacement capability with library binary equivalency and exact matching with MySQL 

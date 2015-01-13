@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: postfix
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install Postfix,  Postfix is a open-source mail transfer agent (MTA) that routes and delivers electronic mail.
 #
 ###############################################################################

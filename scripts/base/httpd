@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: httpd
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install Apache web server, The Apache HTTP Server is a public-domain open source Web server.
 #                The Apache Web server provides a full range of Web server features, including CGI, SSL, and virtual domains. 
 #                Apache also supports plug-in modules for extensibility

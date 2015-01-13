@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: awstats
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install Awstats, AWStats is a powerful and feature full tool that generates advanced web, streaming, 
 #                ftp or mail server statistics, graphically. This log analyzer works as a CGI or from command line and shows 
 #                you all possible information your log contains, in few graphical web pages.

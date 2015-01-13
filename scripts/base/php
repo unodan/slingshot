@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: php
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install PHP and needed modules, PHP is a widely-used open source general-purpose scripting language that 
 #           is especially suited for web development and can be embedded into HTML documents.
 #

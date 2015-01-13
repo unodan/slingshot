@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: epel-release
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install epel-release, (Extra Packages for Enterprise Linux) is open source and free community based repository
 #                project from Fedora team which provides 100% high quality add-on software packages for Linux distributions.
 #

@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: webmin
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install Webmin, Webmin is a web-based interface for system administration. Using any modern web browser, 
 #                you can setup user accounts, Apache, DNS, file sharing and much more. Webmin removes the need to manually
 #                edit configuration files like /etc/passwd, and lets you manage your system from a web browser.

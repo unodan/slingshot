@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: mod_ssl
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install mod_ssl, mod_ssl is an optional module for the Apache HTTP Server. It provides strong cryptography for 
 #                the Apache v1.3 and v2 webserver via the Secure Sockets Layer (SSL v2/v3) and Transport Layer Security (TLS v1) 
 #                cryptographic protocols by the help of the Open Source SSL/TLS toolkit OpenSSL.

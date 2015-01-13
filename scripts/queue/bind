@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: bind
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install bind, BIND (Berkely Internet Name Domain) is used for translating domain names into IP addresses. 
 #
 ###############################################################################

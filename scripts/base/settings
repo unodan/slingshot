@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: settings
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # AUTHOR_EMAIL=danhuckson@gmail.com 
 # Purpose: Set runtime variables needed for the various scripts. 
 #           These variables must be set before the install script is run.

@@ -2,9 +2,6 @@
 ###############################################################################
 #
 # Script: proftpd
-# Date: 2015/01/01
-# Version: V1.0
-# Author: Dan Huckson
 # Purpose: Install Proftp, ProFTPD (short for Pro FTP daemon) is a FTP server. ProFTPD is open-source software, compatible 
 #                with Unix-like systems and Microsoft Windows (via Cygwin). 
 #
