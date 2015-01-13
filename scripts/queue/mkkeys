@@ -1,0 +1,40 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: mkkeys
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Create and install RSA encryption keys.
+#
+###############################################################################
+#
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	echo -e "\n\e[1;33mNOTICE: \e[0mRemoving public and private (\e[1;35mssl\e[0m) encryption keys."
+	[ -f /etc/pki/tls/private/$DOMAIN.key ] && {
+		rm -f /etc/pki/tls/private/$DOMAIN.key /etc/pki/tls/certs/$DOMAIN.crt /etc/ssl/$DOMAIN.pem 
+		echo -e "\n\e[1;37mSUCCESS: \e[0mRemoved public and private (\e[1;35mssl\e[0m) encryption keys."
+		[ "$?" == "0" ] && { PROP=$(($PROP&~$INSTALLED)); } 
+	}
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	echo -e "\n\e[1;33mNOTICE: \e[0mCreating public and private (\e[1;35mssl\e[0m) encryption keys."
+	openssl genrsa -out /etc/pki/tls/private/$DOMAIN.key 8192 2>&1 /dev/null
+	[ "$?" == "0" ] && {
+		chmod 400 /etc/pki/tls/private/$DOMAIN.key
+		openssl req -new -x509 -nodes -sha1 -days 3650 -key /etc/pki/tls/private/$DOMAIN.key -out /etc/pki/tls/certs/$DOMAIN.crt -subj "/C=$C/ST=$ST/L=$L/O=$O/OU=$OU/CN=$CN/emailAddress=$E"
+
+		[ "$?" == "0" ] && {
+			chmod 644 /etc/pki/tls/certs/$DOMAIN.crt
+			cat /etc/pki/tls/certs/$DOMAIN.crt /etc/pki/tls/private/$DOMAIN.key > /etc/ssl/$DOMAIN.pem
+			chmod 400 /etc/ssl/$DOMAIN.pem
+			echo -e "\e[1;37mSUCCESS: \e[0mCreated public and private (\e[1;35mssl\e[0m) encryption keys."
+			PROP=$(($PROP|$INSTALLED));
+		}
+	} || {
+		echo -e "\n\e[1;31mERROR: \e[0mCould not create public and private encryption keys."
+	}
+}
+footer

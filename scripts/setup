@@ -1,0 +1,49 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: setup
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Prevent logging in with ssh, set login message and start installer script.  
+#
+###############################################################################
+#
+# Once script starts prevent ssh login until finished.
+systemctl stop sshd
+
+source ~/scripts/base/settings 
+
+sed -i "/^#Banner/ c\Banner /etc/issue.net" /etc/ssh/sshd_config
+
+# This rule limits one connection to the SSH port from one IP address per minute
+iptables -I INPUT -m hashlimit -m tcp -p tcp --dport 22 --hashlimit 1/min --hashlimit-mode srcip --hashlimit-name ssh -m state --state NEW -j ACCEPT
+
+cat > /etc/issue.net << EOF  
+
+
+   **************************************************************************************************
+   *                                        *** ALERT! ***                                          *
+   *                             You are entering into a secured area!                              *
+   *                    Your IP Address, Login Time and User Name are Recored.                      *
+   *                                                                                                *
+   *  This server is restricted to authorized users only. All activities on this system are logged. *
+   *   Unauthorized access will be fully investigated and reported to the appropriate authorities.  *
+   *                                                                                                *
+   **************************************************************************************************
+
+
+EOF
+
+getent passwd ntp > /dev/null 2&>1
+[ $? -eq 0 ] && userdel ntp
+echo -e "\n { $USER@$INET_IP }\n"
+
+./installer install
+rval=$?
+
+# All done allow ssh logins again.
+systemctl start sshd
+
+exit $rval
+

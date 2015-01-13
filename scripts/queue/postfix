@@ -1,0 +1,71 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: postfix
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install Postfix,  Postfix is a open-source mail transfer agent (MTA) that routes and delivers electronic mail.
+#
+###############################################################################
+#
+SERVICE=postfix
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE;
+	rm -rf /etc/postfix;
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE;
+
+	sed -i -e "/^#mydomain =/{i\mydomain = $DOMAIN" -e ':a;$q;n;ba;}' /etc/postfix/main.cf
+	sed -i -e "/^#myhostname =/{i\myhostname = mail.$DOMAIN" -e ':a;$q;n;ba;}' /etc/postfix/main.cf
+	sed -i -e "/^#myorigin =/{i\myorigin = \$mydomain" -e ':a;$q;n;ba;}' /etc/postfix/main.cf
+
+	sed -i "/^inet_interfaces =/ c\inet_interfaces = all" /etc/postfix/main.cf
+	sed -i "/^inet_protocols =/ c\inet_protocols = ipv4" /etc/postfix/main.cf
+	sed -i "/^mydestination =/ c\mydestination = \$myhostname, localhost.\$mydomain, localhost, \$mydomain" /etc/postfix/main.cf
+
+	sed -i -e "/^#mynetworks =/{i\mynetworks = $NETWORKS" -e ':a;$q;n;ba;}' /etc/postfix/main.cf
+	sed -i -e "/^#home_mailbox = Maildir\//{i\home_mailbox = Maildir\/" -e ':a;$q;n;ba;}' /etc/postfix/main.cf
+	sed -i -e '/^#smtpd_banner =/{i\smtpd_banner = $myhostname ESMTP' -e ':a;$q;n;ba;}' /etc/postfix/main.cf
+
+
+cat >> /etc/postfix/main.cf << EOF
+
+# Limit email message to 10M
+message_size_limit = 10485760
+
+# Limit email mailbox to 1G
+mailbox_size_limit = 1073741824
+
+# SMTP-Auth
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = \$myhostname
+smtpd_recipient_restrictions = permit_mynetworks,permit_auth_destination,permit_sasl_authenticated,reject
+EOF
+
+
+	#sed -i "/^#header_checks =/ c\header_checks = regexp:/etc/postfix/header_checks" /etc/postfix/main.cf
+
+	#cat >> /etc/postfix/header_checks << EOF
+	#/^From:.*<#.*@.*>/ REJECT
+	#/^Return-Path:.*<#.*@.*>/ REJECT 
+	#/^Received:/ HOLD
+	#EOF
+
+	#cat >> /etc/postfix/body_checks  << EOF
+	#/^(|[^>].*)example.com/ REJECT 
+	#EOF
+
+	sed -i "/^#smtps/ c\smtps     inet  n       -       n       -       -       smtpd" /etc/postfix/master.cf
+	sed -i "/^#  -o smtpd_tls_wrappermode=yes/ c\   -o smtpd_tls_wrappermode=yes" /etc/postfix/master.cf
+	
+	systemctl start $SERVICE;
+	systemctl enable $SERVICE;
+}
+footer

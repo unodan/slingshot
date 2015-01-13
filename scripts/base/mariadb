@@ -1,0 +1,55 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: mariadb
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install MariaDB, MariaDB is an enhanced, drop-in replacement for MySQL, it's a community-developed fork 
+#                of the MySQL relational database management system. The intent is also to maintain high compatibility with
+#                MySQL, ensuring a "drop-in" replacement capability with library binary equivalency and exact matching with MySQL 
+#                APIs and commands.It includes the XtraDB storage engine for replacing InnoDB, as well as a new storage engine, 
+#                Aria, that intends to be both a transactional and non-transactional engine.
+#
+###############################################################################
+#
+SERVICE=mariadb
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove "$PACKAGE-server $PACKAGE";
+	[ -d  /var/lib/mysql ] && rm -rf /var/lib/mysql;
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install "$PACKAGE-server $PACKAGE";
+
+	sed -i "/^[mysqld]/ c\\ncharacter-set-server=utf8" /etc/my.cnf.d/server.cnf
+
+cat >> /etc/my.cnf << EOF
+
+[client]
+default-character-set=utf8
+
+EOF
+
+	systemctl start $SERVICE;
+	systemctl enable $SERVICE;
+
+	echo "UPDATE mysql.user SET Password=PASSWORD('$DB_ADM_PW') WHERE User='$DB_ADM';" | mysql
+	echo "FLUSH PRIVILEGES;" | mysql
+
+	do_query "DELETE FROM mysql.user WHERE User='';"
+
+	# Remove remote root access.
+	do_query "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+
+	# Remove test database and privileges to it.
+	do_query "DROP DATABASE IF EXISTS test;"
+	do_query "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"
+
+	sed -i -e '/\[mysqld]/{:a;n;/^$/!ba;i\max_allowed_packet=64Mb\nnet_buffer_length=1000000\n' -e '}'  /etc/my.cnf
+
+
+}
+footer
+

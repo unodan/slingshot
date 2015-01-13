@@ -1,0 +1,39 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: php
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install PHP and needed modules, PHP is a widely-used open source general-purpose scripting language that 
+#           is especially suited for web development and can be embedded into HTML documents.
+#
+###############################################################################
+#
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove "php php-pear php-mbstring";
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install "php php-pear php-mbstring"
+	
+	sed -i '/^upload_max_filesize/ c\upload_max_filesize = 1000M' /etc/php.ini
+	sed -i '/^post_max_size/ c\post_max_size = 1000M' /etc/php.ini
+	sed -i '/^memory_limit/ c\memory_limit = 1024M' /etc/php.ini
+	sed -i "/^;date.timezone/ c\date.timezone = '$TIME_ZONE'" /etc/php.ini
+
+# Test page to see if PHP is working correctly.
+systemctl restart $HTTP_SERVICE
+
+cat > $DOC_ROOT/index.php << EOF
+<html>
+	<body>
+		<div><?php phpinfo(); ?></div>
+	</body>
+</html>
+EOF
+
+}
+footer
+

@@ -1,0 +1,44 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: proftpd
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install Proftp, ProFTPD (short for Pro FTP daemon) is a FTP server. ProFTPD is open-source software, compatible 
+#                with Unix-like systems and Microsoft Windows (via Cygwin). 
+#
+###############################################################################
+#
+SERVICE=proftpd
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE; 	
+	sed -i "/^ftp/d" /var/named/chroot/var/named/$DOMAIN.hosts
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE;
+	[ "$?" == "0" ] && {
+		sed -i '#^DefaultRoot ~##' /etc/proftpd.conf
+		sed -i '#<Global># a \DefaultRoot ~' /etc/proftpd.conf
+		sed -i "#<IfModule mod_tls.c>#,#</IfModule>#d" /etc/proftpd.conf
+	
+cat >> /etc/proftpd.conf << EOF
+<IfModule mod_tls.c>
+TLSEngine on
+TLSLog /var/log/proftpd/tls.log
+TLSProtocol SSLv23
+TLSOptions NoCertRequest NoSessionReuseRequired AllowClientRenegotiations
+TLSRSACertificateFile /etc/pki/tls/certs/$DOMAIN.crt
+TLSRSACertificateKeyFile /etc/pki/tls/private/$DOMAIN.key
+TLSVerifyClient off
+TLSRequired on
+</IfModule>
+EOF
+
+		systemctl start $SERVICE;
+		systemctl enable $SERVICE;
+	}
+}
+footer

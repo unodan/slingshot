@@ -1,0 +1,42 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: mod_ssl
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install mod_ssl, mod_ssl is an optional module for the Apache HTTP Server. It provides strong cryptography for 
+#                the Apache v1.3 and v2 webserver via the Secure Sockets Layer (SSL v2/v3) and Transport Layer Security (TLS v1) 
+#                cryptographic protocols by the help of the Open Source SSL/TLS toolkit OpenSSL.
+#
+###############################################################################
+#
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE; 
+	[[ -d /etc/httpd ]] && rm -rf /etc/httpd;
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE;
+	
+	[ "$?" == "0" ] && {
+		[[ ! -d /etc/httpd/conf.d ]] && mkdir /etc/httpd/conf.d
+		sed -i "s/localhost.crt/$DOMAIN.crt/" /etc/httpd/conf.d/ssl.conf
+		sed -i "s/localhost.key/$DOMAIN.key/" /etc/httpd/conf.d/ssl.conf
+		rm -f /etc/pki/tls/{private/localhost.key,certs/localhost.crt}
+		
+		sed -i "/^DocumentRoot =/ c\/home/dan/www/danhuckson.com/public_html/" /etc/httpd/conf.d/ssl.conf
+		sed -i "/^ServerName =/ c\www.$DOMAIN" /etc/httpd/conf.d/ssl.conf
+
+cat >> /etc/httpd/conf/httpd.conf <<  EOF
+ServerSignature Off
+ServerTokens Prod
+SSLCertificateFile      /etc/pki/tls/certs/$DOMAIN.crt
+SSLCertificateKeyFile   /etc/pki/tls/private/$DOMAIN.key
+EOF
+
+	}
+	[ "`is_on httpd`" == "1" ] && { systemctl restart httpd; }
+}
+footer

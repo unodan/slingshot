@@ -1,0 +1,68 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: webmin
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: Install Webmin, Webmin is a web-based interface for system administration. Using any modern web browser, 
+#                you can setup user accounts, Apache, DNS, file sharing and much more. Webmin removes the need to manually
+#                edit configuration files like /etc/passwd, and lets you manage your system from a web browser.
+#
+###############################################################################
+#
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE;
+	[ "$?" == "0" ] && { [ "`is_on httpd`" == "1" ] && { service httpd restart; } }
+	[[ -d /etc/webmin.rpmsave ]] && rm -rf /etc/webmin.rpmsave/
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+
+cat > /etc/yum.repos.d/webmin.repo << EOF
+[Webmin]
+name=Webmin Distribution Neutral
+#baseurl=http://download.webmin.com/download/yum
+mirrorlist=http://download.webmin.com/download/yum/mirrorlist
+enabled=1
+EOF
+
+	sed -i '/^#listen =/ c\listen = *' /etc/dovecot/dovecot.conf
+
+	rpm --import http://www.webmin.com/jcameron-key.asc
+	yum -y install $PACKAGE;
+	
+	sed -i "/^listen=/ c\listen=1960" /etc/webmin/miniserv.conf
+	sed -i "/^port=/ c\port=1960" /etc/webmin/miniserv.conf
+	sed -i "/^keyfile=/ c\keyfile=/etc/pki/tls/private/$DOMAIN.key" /etc/webmin/miniserv.conf
+
+cat >> /etc/webmin/miniserv.conf << EOF
+extracas=
+certfile=/etc/pki/tls/certs/$DOMAIN.crt
+ssl_redirect=1
+EOF
+
+	sed -i "/^dovecot_config=/ c\dovecot_config=/etc/dovecot/dovecot.conf" /etc/webmin/dovecot/config
+	sed -i "/^syslogd=/ c\syslogd=/sbin/rsyslogd" /etc/webmin/syslog/config
+	sed -i "/^restart_cmd=/ c\restart_cmd=/etc/rc.d/init.d/rsyslog reload" /etc/webmin/syslog/config
+	sed -i "/^start_cmd=/ c\start_cmd=/etc/rc.d/init.d/rsyslog start" /etc/webmin/syslog/config
+	sed -i "/^syslog_conf=/ c\syslog_conf=/etc/rsyslog.conf" /etc/webmin/syslog/config
+
+	while read line; do
+		a=`echo $line | cut -f2 -d=`
+		[ "$a" = "1" ] && echo $line >> ./installed.cache 
+	done < /etc/webmin/installed.cache
+
+	mv -f ./installed.cache /etc/webmin/
+
+cat >> /etc/webmin/bind8/config << EOF
+chroot=/var/named/chroot/
+EOF
+	/etc/webmin/restart 2>&1 /dev/null
+	[ "$?" == "0" ] &&  { 
+		PROP=$(($PROP|$INSTALLED))
+		[ "`is_on httpd`" == "1" ] && { systemctl restart httpd; }	
+	}
+}
+footer

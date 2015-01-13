@@ -1,0 +1,21 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: template
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: A simple template to be used as a starting point for new package configuration.
+#
+###############################################################################
+#
+SERVICE=
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE; 
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE;
+}
+footer

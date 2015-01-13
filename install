@@ -1,0 +1,85 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: install
+# Date: 2015/01/01
+# Version: V1.0
+# Author: Dan Huckson
+# Purpose: This script starts the installation process and uploads,
+#          the installation scripts to the remote server.
+#
+###############################################################################
+#
+clear
+source $(dirname $(readlink -f $0))/scripts/base/settings
+
+echo -e "\nSlingshot remote server configuration script."
+echo -e "\nThis script will configure the remote server ($DOMAIN) at address ($INET_IP)."
+echo -e "\nLocal IP=($LOCAL_IP), Remote IP=($INET_IP), Remote User=($USER_ID)"
+
+[ -f ~/.ssh/known_hosts ] && {
+	ip=`cat ~/.ssh/known_hosts | grep "$INET_IP" | cut -f1 -d' '`
+
+	[[ -n $ip ]] && {
+		echo -e "\nThere is an entry in the local file \"~/.ssh/known_hosts\" with the IP address ($INET_IP)."
+		while : ; do
+			echo -e
+			read -p "This entry must be updated, continue (y/n)? " reply
+			reply=${reply:0:1}; char=${reply,,}
+
+			[[ ($char == 'y'  || $char == 'n') ]] && break || echo -e "\nPlease try again, enter 'y' or 'n'\n"
+		done
+
+		echo -e
+		[[ $char == 'n' ]] && {
+			echo -e "Script aborted, nothing was changed.\n"
+			exit 0
+		} || {
+			sed -i "/$INET_IP/d" ~/.ssh/known_hosts
+		}
+	}
+}
+
+[ -f ~/.ssh/id_rsa.pub ] && {
+	while : ; do
+		echo
+		read -p "The RSA key file \"~/.ssh/id_rsa\" already exists, would you like to overwrite it (y/n)? " reply
+		reply=${reply:0:1}; 
+		char=${reply,,}
+
+		[[ ($char == 'y'  || $char == 'n') ]] && break || echo -e "\nPlease try again, enter 'y' or 'n'\n"
+	done
+
+	echo -e
+	[[ $char == 'y' ]] && {
+		rm ~/.ssh/id_rsa
+		rm ~/.ssh/id_rsa.pub
+		err=$?
+		[[ $err -ne 0 ]] && {
+			echo -e "\nScript aborted.\n"
+			exit $err 
+		}
+	}
+}
+
+[ ! -f ~/.ssh/id_rsa ] && {
+	echo -e "\n\n\n" | ssh-keygen -t rsa -N ""  > /dev/null 2>&1
+	err=$?
+	[[ $err -ne 0 ]] && {
+		echo -e "\nERROR:$err, Script aborted.\n"
+		exit $err 
+	}
+}
+
+# Copy RSA public key to the remote host.
+echo -e "Connecting to the remote server >>> ($INET_IP)...\n"
+ssh-copy-id -i ~/.ssh/id_rsa.pub $ADM_USR@$INET_IP > /dev/null 2>&1
+
+# Copy the scripts directory to the remote host.
+echo -e "\nCopying installation scripts to remote server ($INET_IP)...\n"
+scp -r scripts $ADM_USR@$INET_IP:~
+
+# Login to the remote host, make scripts executable then run setup.
+ssh $ADM_USR@$INET_IP 'cd ~/scripts && chmod 500 * && ~/scripts/setup'
+
+echo -e
