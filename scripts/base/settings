@@ -9,7 +9,6 @@
 ###############################################################################
 #
 # Path to location of the scripts.
-SCRIPTS=`pwd`;
 SCRIPTS=~/scripts
 
 # Server time zone.
@@ -19,25 +18,25 @@ TIME_ZONE="America/Toronto"
 ADM_USR=root
 
 # Default user information.
-USER_ID=
-USER_PW=
+USER_ID=dan
 USER_DIR=/home/$USER_ID
 
-# USER_NAME, (full name) field must be in quotes.
+# USER_NAME and USER_PW, fields must be in quotes.
+USER_PW=""
 USER_NAME="Dan Huckson"
 
 # Server network settings.
-DOMAIN=
-HOSTNAME=
+HOSTNAME=ns1
+DOMAIN=example.com
 GW=xxx.xxx.xxx.xxx
 NM=xxx.xxx.xxx.xxx
 INET_IP=xxx.xxx.xxx.xxx
 
-[[ $LOCAL_IP != "`curl -s ipinfo.io/ip`" ]] && {
-	BASE=$SCRIPTS/base
-	line=`ip a show eth0 | grep 'link/ether'` 2> /dev/null
-	HW_ADDR=`echo ${line,,} | cut -f2 -d' '`
-	NETWORKS="127.0.0.0/8, xxx.xxx.xxx.xxx/xx"
+[[ $INET_IP == "`curl -s ipinfo.io/ip`" ]] && {
+        BASE=$SCRIPTS/base
+        line=`ip a show eth0 | grep 'link/ether'` 2> /dev/null
+        HW_ADDR=`echo ${line,,} | cut -f2 -d' '`
+        NETWORKS="127.0.0.0/8, $INET_IP/32"
 }
 
 # HTTP server settings.
