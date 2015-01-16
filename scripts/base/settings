@@ -21,16 +21,17 @@ ADM_USR=root
 # Default user information.
 USER_ID=
 USER_PW=
-USER_NAME=
 USER_DIR=/home/$USER_ID
 
+# USER_NAME, (full name) field must be in quotes.
+USER_NAME="Dan Huckson"
+
 # Server network settings.
-HOSTNAME=
 DOMAIN=
+HOSTNAME=
 GW=xxx.xxx.xxx.xxx
 NM=xxx.xxx.xxx.xxx
 INET_IP=xxx.xxx.xxx.xxx
-LOCAL_IP=xxx.xxx.xxx.xxx
 
 [[ $LOCAL_IP != "`curl -s ipinfo.io/ip`" ]] && {
 	BASE=$SCRIPTS/base
