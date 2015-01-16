@@ -17,12 +17,13 @@ TIME_ZONE="America/Toronto"
 # User with access rights to modify system files.
 ADM_USR=root
 
+
 # Default user information.
-USER_ID=dan
+USER_ID=
+USER_PW=
 USER_DIR=/home/$USER_ID
 
-# USER_NAME and USER_PW, fields must be in quotes.
-USER_PW=""
+# USER_NAME, (full name) field must be in quotes.
 USER_NAME="Dan Huckson"
 
 # Server network settings.
