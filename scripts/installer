@@ -22,19 +22,10 @@ export PROP=0;
 export ACTION;
 export PACKAGE;
 
-que=(
-	"user" 
-	"ntp"
-	"network"
-	"httpd"
-	"mariadb"
-	"php"
-);
-
 start_time=$(date +%s)
 
 action=$(basename $0)
-[ "$action" == "installer" ] && { action=$1; packages="${que[@]}"; } || { packages="$@"; }
+[ "$action" == "installer" ] && { action=$1; packages=$(ls scripts/base/); } || { packages="$@"; }
 
 [ "$action" == "install" ] || [ "$action" == "remove" ] && {
 

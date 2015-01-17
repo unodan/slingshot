@@ -11,23 +11,8 @@ source constants
 source functions;
 
 action=installer
-que=(
-	"epel-release"
-	"fail2ban"
-	"mkkeys" 
-	"mod_ssl"
-	"bind"
-	"postfix"
-	"dovecot"
-	"mailx"
-	"proftpd"
-	"awstats"
-	"webmin"
-	"phpmyadmin"
-	"wordpress"
-);
 
-[ "$action" == "installer" ] && { action=$1; packages="${que[@]}"; } || { packages="$@"; }
+[ "$action" == "installer" ] && { action=$1; packages=$(ls scripts/queue/); } || { packages="$@"; }
 
 [ "$action" == "install" ] || [ "$action" == "remove" ] && {
 
