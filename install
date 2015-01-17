@@ -10,6 +10,8 @@
 clear
 source ./scripts/base/settings
 
+echo -e "\nSlingshot remote server configuration script."
+echo -e "";
 echo -e "###############################################################################";
 echo -e "#";
 echo -e "#                                  *** PLEASE NOTE *** ";
@@ -21,9 +23,7 @@ echo -e "#";
 echo -e "# Log files are availble on the target host ($INET_IP) ~/logs.";
 echo -e "#";
 echo -e "###############################################################################";
-
 echo -e "";
-echo -e "\nSlingshot remote server configuration script."
 echo -e "\nThis script will configure the remote server ($DOMAIN) at address ($INET_IP)."
 echo -e "\nLocal IP=($LOCAL_IP), Remote IP=($INET_IP), Remote User=($USER_ID)"
 
