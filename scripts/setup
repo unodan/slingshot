@@ -9,7 +9,7 @@
 # Once script starts prevent ssh login until finished.
 systemctl stop sshd
 
-source ~/scripts/base/settings 
+source ~/scripts/settings 
 
 sed -i "/^#Banner/ c\Banner /etc/issue.net" /etc/ssh/sshd_config
 

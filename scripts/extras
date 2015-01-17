@@ -6,7 +6,7 @@
 #
 ###############################################################################
 #
-source $BASE/settings
+source settings
 source constants
 source functions;
 
