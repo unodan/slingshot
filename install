@@ -10,16 +10,17 @@
 clear
 source ./scripts/base/settings
 
-echo -e "\n###############################################################################";
-echo -e "\n#  ";
-echo -e "\n#                    *** PLEASE NOTE *** ";
-echo -e "\n#  ";
-echo -e "\n#  This script needs to connect to remote servers to download the required,";
-echo -e "\n#  software packages. Failure to connect to these sources will cause the,";
-echo -e "\n#  package install to fail, and any packages that depend on it. Log files,";
-echo -e "\n#  are availble on the target host at ~/logs.";
-echo -e "\n#  ";
-echo -e "\n###############################################################################";
+echo -e "###############################################################################";
+echo -e "#";
+echo -e "#                                  *** PLEASE NOTE *** ";
+echo -e "#";
+echo -e "# This script needs to connect to remote servers to download the required,";
+echo -e "# software packages. Failure to connect to these sources will cause the,";
+echo -e "# package install to fail, and any packages that depend on them. 
+echo -e "#";
+echo -e "# Log files are availble on the target host ($INET_IP) ~/logs.";
+echo -e "#";
+echo -e "###############################################################################";
 
 echo -e "";
 echo -e "\nSlingshot remote server configuration script."

@@ -11,6 +11,9 @@
 # Path to location of the scripts.
 SCRIPTS=~/scripts
 
+# Local machine IP
+LOCAL_IP=xxx.xxx.xxx.xxx 
+
 # Server time zone.
 TIME_ZONE="America/Toronto"
 
@@ -25,12 +28,12 @@ USER_DIR=/home/$USER_ID
 # USER_NAME, (full name) field must be in quotes.
 USER_NAME="Dan Huckson"
 
-# Server network settings.
+# Remote host network settings.
 HOSTNAME=ns1
 DOMAIN=example.com
 GW=xxx.xxx.xxx.xxx
 NM=xxx.xxx.xxx.xxx
-INET_IP=xxx.xxx.xxx.xxx
+INET_IP=xxx.xxx.xxx.xxx 
 
 [[ $INET_IP == "`curl -s ipinfo.io/ip`" ]] && {
         BASE=$SCRIPTS/base
