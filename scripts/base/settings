@@ -17,7 +17,6 @@ TIME_ZONE="America/Toronto"
 # User with access rights to modify system files.
 ADM_USR=root
 
-
 # Default user information.
 USER_ID=
 USER_PW=
@@ -79,7 +78,3 @@ DB_ADM=root
 DB_ADM_PW=$USER_PW
 DB_USR=$USER_ID
 DB_USR_PW=$USER_PW
-
-# Time zone setting.
-TIME_ZONE="America/Toronto"
-
