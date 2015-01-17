@@ -12,7 +12,7 @@ source functions;
 
 action=installer
 
-[ "$action" == "installer" ] && { action=$1; packages=$(ls scripts/queue/); } || { packages="$@"; }
+[ "$action" == "installer" ] && { action=$1; packages=$(ls $SCRIPTS/queue/); } || { packages="$@"; }
 
 [ "$action" == "install" ] || [ "$action" == "remove" ] && {
 

@@ -25,7 +25,7 @@ export PACKAGE;
 start_time=$(date +%s)
 
 action=$(basename $0)
-[ "$action" == "installer" ] && { action=$1; packages=$(ls scripts/base/); } || { packages="$@"; }
+[ "$action" == "installer" ] && { action=$1; packages=$(ls $SCRIPTS/base/); } || { packages="$@"; }
 
 [ "$action" == "install" ] || [ "$action" == "remove" ] && {
 
