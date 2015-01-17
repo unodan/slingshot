@@ -15,6 +15,7 @@ CONFIG=settings
 	exit
 }
 
+source settings
 source constants
 source functions;
 
