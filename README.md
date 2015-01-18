@@ -2,17 +2,16 @@
 
 Automated Linux Package Installer for CentOS 7
 
+
 Slingshot is a script to automate the installation and configuration of Linux software packages. Slingshot has and uses a template/messaging system.
 
 You can use Slingshot to create custom server setups by writing script modules. Script modules should start by copying and modifying the Slingshot script temple module.
-The Slingshot base installs and configures the (Apache, MariaDB, PHP and NTP) packages and is a basic “LAMP” system.
 
-Slingshot was designed to be extended by simply adding new modules. Module scripts are added to a run queue and executed in (LIFO) order. 
-You can add your own custom packages and/or configurations that extend the base system in ways that suit your particular needs.
+Slingshot was designed to be extended by simply adding new modules. Module scripts are added to a run queue and executed in (FIFO) order. You can create/add your own modules that customize package installation and/or configurations.
 
-The base install of Slingshot consists of 12 scripts, plus the install script. Placing a module in the scripts directory means that script will be 
-include in the run queue, “the script must use the Slingshot template system to be included!”.
+The use of modules allow you to extend or modify the system setup in ways that suit your particular needs.
 
+The Slingshot base installs and configures the (Apache, MariaDB, PHP and NTP) packages and is a basic “LAMP” system. Below is the list of files that make up the base install of Slingshot. This list is the minimum set of files needed for a basic Slingshot (LAMP) installation.
 Below is the list of files that make up the base install of Slingshot. This list is the minimum set of files needed for a basic Slingshot (LAMP) installation.
 
 <table>
@@ -29,6 +28,5 @@ Below is the list of files that make up the base install of Slingshot. This list
 <tr><td>php</td><td>Installs and configures PHP.</td>
 <tr><td>constants</td><td>Constants used for controlling program execution and error handling.</td>
 <tr><td>functions</td><td>Helper functions used by various scripts.</td>
-<tr><td>template	</td><td>A template script used as a starting point for new scripts modules.</td>
 </table>
 
