@@ -11,7 +11,8 @@ Slingshot was designed to be extended by simply adding new modules. Module scrip
 
 The use of modules allow you to extend or modify the system setup in ways that suit your particular needs.
 
-The Slingshot base installs and configures the (Apache, MariaDB, PHP and NTP) packages and is a basic “LAMP” system. Below is the list of files that make up the base install of Slingshot. This list is the minimum set of files needed for a basic Slingshot (LAMP) installation.
+The Slingshot base installs and configures the (Apache, MariaDB, PHP and NTP) packages and is a basic “LAMP” system. 
+
 Below is the list of files that make up the base install of Slingshot. This list is the minimum set of files needed for a basic Slingshot (LAMP) installation.
 
 <table>
