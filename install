@@ -38,8 +38,8 @@ while true; do
 	echo -n "Enter choice (b/e/q): ";
 	read ans;
 	case "$ans" in
-		r) break; ;;
-		s) echo -e $ans ;;
+		b) break; ;;
+		e) echo -e $ans ;;
 		q) echo; exit ;;
 	esac
 done;
