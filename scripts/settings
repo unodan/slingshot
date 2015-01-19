@@ -8,6 +8,8 @@
 #
 ###############################################################################
 #
+#
+
 # Path to location of the scripts.
 SCRIPTS=~/scripts
 
@@ -41,6 +43,9 @@ INET_IP=xxx.xxx.xxx.xxx
         HW_ADDR=`echo ${line,,} | cut -f2 -d' '`
         NETWORKS="127.0.0.0/8, $INET_IP/32"
 }
+
+# Include extra modules 1=TRUE, 0=FALSE.
+EXTRAS=1 
 
 # HTTP server settings.
 HTTP_SERVICE=httpd
