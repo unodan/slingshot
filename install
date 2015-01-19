@@ -113,6 +113,6 @@ echo -e "\n#####################################################################
 echo -e "\n"
 
 # Login to the remote host, make scripts executable then run setup.
-ssh $ADM_USR@$INET_IP 'cd ~/scripts && chmod 500 * && ~/scripts/setup TEST'
+ssh $ADM_USR@$INET_IP "cd ~/scripts && chmod 500 * && ~/scripts/setup $ans"
 
 echo -e
