@@ -44,7 +44,7 @@ while true; do
 	esac
 done;
 
-echo -e "###############################################################################"
+echo -e "\n###############################################################################"
 
 [ -f ~/.ssh/known_hosts ] && {
 	ip=`cat ~/.ssh/known_hosts | grep "$INET_IP" | cut -f1 -d' '`
@@ -105,8 +105,11 @@ echo -e "Connecting to the remote server >>> ($INET_IP)...\n"
 ssh-copy-id -i ~/.ssh/id_rsa.pub $ADM_USR@$INET_IP > /dev/null 2>&1
 
 # Copy the scripts directory to the remote host.
+echo -e "\n###############################################################################"
 echo -e "\nCopying installation scripts to remote server ($INET_IP)...\n"
 scp -r scripts $ADM_USR@$INET_IP:~
+echo -e "\n###############################################################################"
+echo -e "\n"
 
 # Login to the remote host, make scripts executable then run setup.
 ssh $ADM_USR@$INET_IP 'cd ~/scripts && chmod 500 * && ~/scripts/setup $ans'
