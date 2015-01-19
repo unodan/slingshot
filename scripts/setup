@@ -10,6 +10,9 @@
 systemctl stop sshd
 
 export EXTRAS=$1
+echo $EXTRAS
+echo $1
+
 source ~/scripts/settings 
 
 
