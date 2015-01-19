@@ -62,7 +62,7 @@ action=$(basename $0)
 	done
 
 	# Add in configuration queues should be placed below this line.
-	[ -f extras ] && source extras;
+	#[ -f extras ] && source extras;
 	# Add on configuration queues should be placed above this line.
 
 	[ "$(basename $0)" == "installer" ] && finalise
