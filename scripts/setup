@@ -12,7 +12,6 @@ systemctl stop sshd
 export EXTRAS=$1
 source ~/scripts/settings 
 
-
 sed -i "/^#Banner/ c\Banner /etc/issue.net" /etc/ssh/sshd_config
 
 # This rule limits one connection to the SSH port from one IP address per minute
