@@ -44,6 +44,8 @@ while true; do
 	esac
 done;
 
+echo -e "###############################################################################"
+
 [ -f ~/.ssh/known_hosts ] && {
 	ip=`cat ~/.ssh/known_hosts | grep "$INET_IP" | cut -f1 -d' '`
 
