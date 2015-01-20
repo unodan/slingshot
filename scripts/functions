@@ -90,32 +90,32 @@ yum() {
 throw() {
 	case $1 in
 		$REMOVE_FAIL)
-			echo -e "\n\e[1;31mERROR: \e[0mPackage (\e[1;36m$PACKAGE\e[0m) has failed to un-install.";
+			echo -e "\n\e[1;31mERROR: \e[32mPackage (\e[1;36m$PACKAGE\e[32m) has failed to un-install.";
 		;;
 		$INSTALL_FAIL)
-			echo -e "\n\e[1;31mERROR: \e[0mPackage (\e[1;36m$PACKAGE\e[0m) has failed to install.";
+			echo -e "\n\e[1;31mERROR: \e[32mPackage (\e[1;36m$PACKAGE\e[32m) has failed to install.";
 		;;
 		$NOT_INSTALLED)
-			 echo -e "\n\e[1;33mWARNING: \e[0mPackage (\e[1;36m$PACKAGE\e[0m) is not installed.";
+			 echo -e "\n\e[1;33mWARNING: \e[32mPackage (\e[1;36m$PACKAGE\e[32m) is not installed.";
 		;;
 		$ALREADY_INSTALLED)
 			[[ $(($RUNTIME&$INSTALL_RESTORE)) == $INSTALL_RESTORE ]] && { 
-				echo -e "\n\e[1;33mWARNING: \e[0mPackage (\e[1;36m$PACKAGE\e[0m) is already installed, doing (\e[1;36mrestore\e[0m) install.\n";
+				echo -e "\n\e[1;33mWARNING: \e[32mPackage (\e[1;36m$PACKAGE\e[32m) is already installed, doing (\e[1;36mrestore\e[32m) install.\n";
 			} || {
-				[[ $(($RUNTIME&$INSTALL_DESTRUCTIVE)) == $INSTALL_DESTRUCTIVE ]] && { echo -e "\n\e[1;33mWARNING: \e[0mPackage (\e[1;36m$PACKAGE\e[0m) is already installed, doing (\e[1;31mdestructive\e[0m) install.\n"; }
+				[[ $(($RUNTIME&$INSTALL_DESTRUCTIVE)) == $INSTALL_DESTRUCTIVE ]] && { echo -e "\n\e[1;33mWARNING: \e[32mPackage (\e[1;36m$PACKAGE\e[32m) is already installed, doing (\e[1;31mdestructive\e[32m) install.\n"; }
 			} || {
-				[[ $(($RUNTIME&$INSTALL_UPDATE)) == $INSTALL_UPDATE ]] && { echo -e "\n\e[1;33mWARNING: \e[0mUpdating package (\e[1;36m$PACKAGE\e[0m).\n";	}
+				[[ $(($RUNTIME&$INSTALL_UPDATE)) == $INSTALL_UPDATE ]] && { echo -e "\n\e[1;33mWARNING: \e[32mUpdating package (\e[1;36m$PACKAGE\e[32m).\n";	}
 			}
 		;;
 	esac
 
 	[ "$EXIT_ON_ERROR" == "true" ] && [[ $(($ERR_CODE&$STOP)) == $STOP ]] && {
-		echo -e "Exiting script (\e[1;36m$PACKAGE\e[0m) do to previous error.\n";
+		echo -e "Exiting script (\e[1;36m$PACKAGE\e[32m) do to previous error.\n";
 		exit;
 	}
 
 	[ "$EXIT_ON_WARNING" == "true" ] && [[ $(($ERR_CODE&$STOP)) == $STOP ]] && {
-		echo -e "Exiting script (\e[1;36m$PACKAGE\e[0m) do to previous warning.\n";
+		echo -e "Exiting script (\e[1;36m$PACKAGE\e[32m) do to previous warning.\n";
 		exit;
 	}
 }
@@ -128,7 +128,7 @@ systemctl() {
 			[ "$rval" == "0" ] && { 
 				PROP=$(($PROP|$SERVICE_ON));
 			} || { 
-				echo -e "\e[1;33mWARNING: \e[0mService (\e[1;36m$2\e[0m) failed to start."; 
+				echo -e "\e[1;33mWARNING: \e[32mService (\e[1;36m$2\e[32m) failed to start."; 
 			} 
 		;;
 		stop)
@@ -137,7 +137,7 @@ systemctl() {
 			[ "$rval" == "0" ] && { 
 				PROP=$(($PROP&~$SERVICE_ON));
 			} || { 
-				echo -e "\e[1;33mWARNING: \e[0mService (\e[1;36m$2\e[0m) failed has to stop."; 
+				echo -e "\e[1;33mWARNING: \e[32mService (\e[1;36m$2\e[32m) failed has to stop."; 
 			}
 		;;
 		restart)
@@ -146,7 +146,7 @@ systemctl() {
 			[ "$rval" == "0" ] && { 
 				PROP=$(($PROP|$SERVICE_ON));
 			} || { 
-				echo -e "\e[1;33mWARNING: \e[0mService (\e[1;36m$2\e[0m) failed has to re-start."; 
+				echo -e "\e[1;33mWARNING: \e[32mService (\e[1;36m$2\e[32m) failed has to re-start."; 
 			}
 		;;
 		enable)
@@ -225,58 +225,58 @@ action() {
 
 header() {
 	[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { action="Installation"; } || { [[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { action="Removal"; } }
-	echo -e "\e[1;34m===============================================================================\e[0m"
-	echo -e "\e[1;34m= \e[0m\e[1;35mAction: \e[0m$action of package (\e[1;36m$PACKAGE\e[0m)."
-	echo -e "\e[1;36m===============================================================================\e[0m"
-	echo -e "\e[1;34m= \e[0mRunning script (\e[1;36m$PACKAGE\e[0m) on (\e[1;33m$DOMAIN\e[0m)." 
-	echo -e "\e[1;36m===============================================================================\e[0m"
+	echo -e "\e[1;34m===============================================================================\e[32m"
+	echo -e "\e[1;34m= \e[32m\e[1;35mAction: \e[32m$action of package (\e[1;36m$PACKAGE\e[32m)."
+	echo -e "\e[1;36m===============================================================================\e[32m"
+	echo -e "\e[1;34m= \e[32mRunning script (\e[1;36m$PACKAGE\e[32m) on (\e[1;33m$DOMAIN\e[32m)." 
+	echo -e "\e[1;36m===============================================================================\e[32m"
 }
 
 footer() {
-	echo -e "\n\e[1;36m===============================================================================\e[0m"
+	echo -e "\n\e[1;36m===============================================================================\e[32m"
 	[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && {
 		[[ $(($PROP&$INSTALLED)) == $INSTALLED ]] && { 
-			echo -e "\e[1;34m= \e[0m\e[1;35m ACTION\e[0m: Installation of package (\e[1;36m$PACKAGE\e[0m).";
-			echo -e "\e[1;34m= \e[0m\e[1;35m RESULT\e[0m: Package (\e[1;36m$PACKAGE\e[0m) was installed (\e[1;37msuccessfully\e[0m).";
+			echo -e "\e[1;34m= \e[32m\e[1;35m ACTION\e[32m: Installation of package (\e[1;36m$PACKAGE\e[32m).";
+			echo -e "\e[1;34m= \e[32m\e[1;35m RESULT\e[32m: Package (\e[1;36m$PACKAGE\e[32m) was installed (\e[1;37msuccessfully\e[32m).";
 		} || {
-			echo -e "\e[1;34m= \e[0m\e[1;35m ACTION\e[0m: Installation of package (\e[1;36m$PACKAGE\e[0m).";
-			echo -e "\e[1;34m= \e[0m\e[1;35m RESULT\e[0m: Package (\e[1;36m$PACKAGE\e[0m) was installed (\e[1;31mfailed\e[0m).";
+			echo -e "\e[1;34m= \e[32m\e[1;35m ACTION\e[32m: Installation of package (\e[1;36m$PACKAGE\e[32m).";
+			echo -e "\e[1;34m= \e[32m\e[1;35m RESULT\e[32m: Package (\e[1;36m$PACKAGE\e[32m) was installed (\e[1;31mfailed\e[32m).";
 		}
 	}
 
 	[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && {
 		[[ $(($PROP&$INSTALLED)) == $INSTALLED ]] && { 
-			echo -e "\e[1;34m= \e[0m\e[1;35m ACTION\e[0m: Removal of package (\e[1;36m$PACKAGE\e[0m).";
-			echo -e "\e[1;34m= \e[0m\e[1;35m RESULT\e[0m: Package (\e[1;36m$PACKAGE\e[0m) has (\e[1;31mfailed\e[0m) to un-install.";
+			echo -e "\e[1;34m= \e[32m\e[1;35m ACTION\e[32m: Removal of package (\e[1;36m$PACKAGE\e[32m).";
+			echo -e "\e[1;34m= \e[32m\e[1;35m RESULT\e[32m: Package (\e[1;36m$PACKAGE\e[32m) has (\e[1;31mfailed\e[32m) to un-install.";
 		} || {
-			echo -e "\e[1;34m= \e[0m\e[1;35m ACTION\e[0m: Removal of package (\e[1;36m$PACKAGE\e[0m).";
-			[[ $ERR_CODE == "0" ]] && echo -e "\e[1;34m= \e[0m\e[1;35m RESULT\e[0m: Package (\e[1;36m$PACKAGE\e[0m) was removed (\e[1;37msuccessfully\e[0m).";
-			[[ $(($ERR_CODE&$NOT_INSTALLED)) == $NOT_INSTALLED ]] && echo -e "\e[1;34m= \e[0m\e[1;35m RESULT\e[0m: No action taken, package (\e[1;36m$PACKAGE\e[0m) is not currently installed.";
+			echo -e "\e[1;34m= \e[32m\e[1;35m ACTION\e[32m: Removal of package (\e[1;36m$PACKAGE\e[32m).";
+			[[ $ERR_CODE == "0" ]] && echo -e "\e[1;34m= \e[32m\e[1;35m RESULT\e[32m: Package (\e[1;36m$PACKAGE\e[32m) was removed (\e[1;37msuccessfully\e[32m).";
+			[[ $(($ERR_CODE&$NOT_INSTALLED)) == $NOT_INSTALLED ]] && echo -e "\e[1;34m= \e[32m\e[1;35m RESULT\e[32m: No action taken, package (\e[1;36m$PACKAGE\e[32m) is not currently installed.";
 		}
 	}	
 
 	[ $SERVICE ] && {
 		[[ $(($PROP&$SERVICE_ON)) == $SERVICE_ON ]] && { 
-			echo -e "\e[1;34m= \e[0m\e[1;35mSERVICE\e[0m: Service (\e[1;36m$SERVICE\e[0m) is currently running.";
+			echo -e "\e[1;34m= \e[32m\e[1;35mSERVICE\e[32m: Service (\e[1;36m$SERVICE\e[32m) is currently running.";
 		} || { 
-			echo -e "\e[1;34m= \e[0m\e[1;35mSERVICE\e[0m: Service (\e[1;36m$SERVICE\e[0m) is currently not running.";
+			echo -e "\e[1;34m= \e[32m\e[1;35mSERVICE\e[32m: Service (\e[1;36m$SERVICE\e[32m) is currently not running.";
 		}
 
 		[[ $(($PROP&$ENABLE)) == $ENABLE ]] && { 
-			echo -e "\e[1;34m= \e[0m\e[1;35mSTARTUP\e[0m: Service (\e[1;36m$SERVICE\e[0m) will start at boot time.";
+			echo -e "\e[1;34m= \e[32m\e[1;35mSTARTUP\e[32m: Service (\e[1;36m$SERVICE\e[32m) will start at boot time.";
 		} || { 
-			echo -e "\e[1;34m= \e[0m\e[1;35mSERVICE\e[0m: Service (\e[1;36m$SERVICE\e[0m) will not start at boot time.";
+			echo -e "\e[1;34m= \e[32m\e[1;35mSERVICE\e[32m: Service (\e[1;36m$SERVICE\e[32m) will not start at boot time.";
 		}
 	}
 
-	echo -e "\e[1;34m===============================================================================\e[0m"
+	echo -e "\e[1;34m===============================================================================\e[32m"
 
 	s=$[$(date +%s) - $start_time]; h=$[$s / 3600]; s=$[$s - $[$h * 3600]]; m=$[$s / 60]; s=$[$s - $[m * 60]]
-	[ "$h" != '0' ] && hours=" \e[1;33m$h\e[0m hours" || hours=""
-	[ "$m" != '0' ] && minutes=" \e[1;33m$m\e[0m minutes and" || minutes=""
+	[ "$h" != '0' ] && hours=" \e[1;33m$h\e[32m hours" || hours=""
+	[ "$m" != '0' ] && minutes=" \e[1;33m$m\e[32m minutes and" || minutes=""
 
-	echo -e "\e[1;34m= \e[0m Current runtime$hours$minutes \e[1;33m$s\e[0m seconds."
-	echo -e "\e[1;34m===============================================================================\e[0m\n"
+	echo -e "\e[1;34m= \e[32m Current runtime$hours$minutes \e[1;33m$s\e[32m seconds."
+	echo -e "\e[1;34m===============================================================================\e[32m\n"
 }
 
 initialise() {
@@ -294,18 +294,18 @@ initialise() {
 	echo "export PS1=\"\u@$DOMAIN:\w> \"" >> /etc/bashrc
 
 	# Update all installed packages.
-	echo -e "\e[1;34m===============================================================================\e[0m"
-	echo -e "\e[1;34m= \e[0m\e[1;37mUpdating installed packages."
-	echo -e "\e[1;34m=\e[1;36m==============================================================================\e[0m"
+	echo -e "\e[1;34m===============================================================================\e[32m"
+	echo -e "\e[1;34m= \e[32m\e[1;37mUpdating installed packages."
+	echo -e "\e[1;34m=\e[1;36m==============================================================================\e[32m"
 
 	echo;
 	$YUM -y clean all
 	$YUM -y install deltarpm 
 	$YUM -y update
 
-	echo -e "\e[1;34m=\e[1;36m==============================================================================\e[0m"
-	echo -e "\e[1;34m= \e[0m\e[1;37mFinished updating installed packages."	
-	echo -e "\e[1;34m===============================================================================\e[0m"
+	echo -e "\e[1;34m=\e[1;36m==============================================================================\e[32m"
+	echo -e "\e[1;34m= \e[32m\e[1;37mFinished updating installed packages."	
+	echo -e "\e[1;34m===============================================================================\e[32m"
 	echo -e "\n\n"
 }
 
@@ -326,11 +326,11 @@ menu() {
 		echo -e
 		echo -e "###############################################################################";
 		echo -e
-		echo -e "              \e[1;33mSlingshot Server Configuration Script\e[0m";
-		echo -e 
+		echo -e "              \e[1;33mSlingshot Server Configuration Script\e[32m";
+		echo -e  
 		echo -e "###############################################################################";
 		echo -e 
-		echo -e "                     *** \e[0m\e[1;35mPLEASE NOTE\e[0m ***";
+		echo -e "                     *** \e[32m\e[1;35mPLEASE NOTE\e[32m ***";
 		echo -e 
 		echo -e " This script has to connect to remote servers to download the required,";
 		echo -e " source software packages. Failure to connect to these resources will cause the,";
