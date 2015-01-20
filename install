@@ -29,7 +29,7 @@ while true; do
 	echo -e "#";
 	echo -e "###############################################################################"
 	echo -e "\nThis script will configure the remote server ($DOMAIN) at address ($INET_IP).";
-	echo -e "\nLocal IP=($LOCAL_IP), Remote IP=($INET_IP), Remote User=($USER_ID)";
+	echo -e "\nLocal IP=($LOCAL_IP), Target IP=($INET_IP), Target User=($USER_ID)";
 	echo -e
 	echo -e " b: Slingshot Base Install";
 	echo -e " e: Slingshot Base Install + Extras";
@@ -44,7 +44,7 @@ while true; do
 	esac
 done;
 
-echo  "\n###############################################################################"
+echo  -e "\n###############################################################################"
 
 [ -f ~/.ssh/known_hosts ] && {
 	ip=`cat ~/.ssh/known_hosts | grep "$INET_IP" | cut -f1 -d' '`
