@@ -12,12 +12,16 @@ systemctl stop sshd
 export EXTRAS=$1
 cd ~/scripts
 source ./settings
+source ./functions
 
+ans=
 # Display menu if running setup manually from target.
 [ "$2" != "1" ] && {
-	menu
-	ans=$?
+        menu
+        ans=$?
 }
+
+[ "$ans" == '1' ] && { echo; exit; }
 
 
 sed -i "/^#Banner/ c\Banner /etc/issue.net" /etc/ssh/sshd_config
