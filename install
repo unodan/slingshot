@@ -10,8 +10,9 @@
 source $(dirname $(readlink -f $0))/scripts/settings
 source $(dirname $(readlink -f $0))/scripts/functions
 
-ans=menu
-[ "$ans" == '1' ] && exit;
+menu
+ans=$?
+[ "$ans" == '1' ] && { echo; exit; }
 
 [ -f ~/.ssh/known_hosts ] && {
 	ip=`cat ~/.ssh/known_hosts | grep "$INET_IP" | cut -f1 -d' '`
