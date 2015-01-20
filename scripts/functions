@@ -6,9 +6,9 @@
 #
 ###############################################################################
 #
-#[ -f $CONFIG ] && {
-#	source $CONFIG;
-#} || { echo -e "Configuration file ($CONFIG) can't be found!"; exit; }
+[ -f $CONFIG ] && {
+	source $CONFIG;
+} || { echo -e "Configuration file ($CONFIG) can't be found!"; exit; }
 
 is_on() {
 	[[ `ps -A | grep $1` ]] && { echo 1; } || { echo 0; } 
