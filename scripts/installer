@@ -63,7 +63,7 @@ action=$(basename $0)
 	done
 
 	# Add in configuration queues should be placed below this line.
-	[ "$EXTRAS" == "e" ] && {
+	[ "$EXTRAS" == "3" ] && {
 		[ -f extras ] && source extras;
 	}
 	# Add on configuration queues should be placed above this line.
