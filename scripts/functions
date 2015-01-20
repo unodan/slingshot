@@ -6,6 +6,8 @@
 #
 ###############################################################################
 #
+echo $(readlink -f $0)
+
 CONFIG=$(dirname $(readlink -f $0))/scripts/settings
 
 [ -f $CONFIG ] && {
