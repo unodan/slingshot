@@ -7,10 +7,10 @@
 #
 ###############################################################################
 #
-source $(dirname $(readlink -f $0))/scripts/menus
 source $(dirname $(readlink -f $0))/scripts/settings
 
-[ "`menu`" == '1' ] && exit;
+ans=menu
+[ "$ans" == '1' ] && exit;
 
 [ -f ~/.ssh/known_hosts ] && {
 	ip=`cat ~/.ssh/known_hosts | grep "$INET_IP" | cut -f1 -d' '`
