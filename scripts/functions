@@ -324,20 +324,20 @@ menu() {
 		clear
 		echo -e
 		echo -e "###############################################################################";
-		echo -e "#";
-		echo -e "#              \e[1;33mSlingshot Server Configuration Script\e[0m";
-		echo -e "#";
+		echo -e
+		echo -e "              \e[1;33mSlingshot Server Configuration Script\e[0m";
+		echo -e 
 		echo -e "###############################################################################";
-		echo -e "#";
-		echo -e "#                        *** PLEASE NOTE ***";
-		echo -e "#";
-		echo -e "# This script has to connect to remote servers to download the required,";
-		echo -e "# source software packages. Failure to connect to these resources will cause the,";
-		echo -e "# package install to fail, and any packages that depend on them. Always view the log,";
-		echo -e "# files after the installation has finished for failures/errors.";
-		echo -e "#";
-		echo -e "# The install log files are availble on the target host ($INET_IP) ~/logs.";
-		echo -e "#";
+		echo -e 
+		echo -e "                            *** \e[0m\e[1;35mPLEASE NOTE\e[0m ***";
+		echo -e 
+		echo -e " This script has to connect to remote servers to download the required,";
+		echo -e " source software packages. Failure to connect to these resources will cause the,";
+		echo -e " package install to fail, and any packages that depend on them. Always view the log,";
+		echo -e " files after the installation has finished for failures/errors.";
+		echo -e 
+		echo -e " The install log files are availble on the target host ($INET_IP) ~/logs.";
+		echo -e 
 		echo -e "###############################################################################"
 		echo -e "\nThis script will configure the remote server ($DOMAIN) at address ($INET_IP).";
 		echo -e "\nLocal IP=($LOCAL_IP), Target IP=($INET_IP), Target User=($USER_ID)";
