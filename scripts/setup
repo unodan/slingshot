@@ -10,8 +10,8 @@
 systemctl stop sshd
 
 export EXTRAS=$1
-
 cd ~/scripts
+source ./menus
 source ./settings
 
 # This gets run if setup not started by install script.
