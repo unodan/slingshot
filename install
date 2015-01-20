@@ -7,7 +7,6 @@
 #
 ###############################################################################
 #
-
 source $(dirname $(readlink -f $0))/scripts/constants
 source $(dirname $(readlink -f $0))/scripts/settings
 source $(dirname $(readlink -f $0))/scripts/functions
@@ -76,7 +75,7 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub $ADM_USR@$INET_IP > /dev/null 2>&1
 
 # Copy the scripts directory to the remote host.
 echo -e "\n###############################################################################"
-echo -e "\nCopying installation scripts to remote server ($INET_IP)...\n"
+echo -e "\nCopying scripts to target host ($INET_IP)...\n"
 scp -r scripts $ADM_USR@$INET_IP:~
 echo -e "\n###############################################################################"
 echo -e "\n"

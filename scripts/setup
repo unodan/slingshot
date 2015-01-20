@@ -10,18 +10,18 @@
 systemctl stop sshd
 
 cd ~/scripts
-source ./constants
-source ./settings
-source ./functions
-export EXTRAS=$1
+source constants
+source settings
+source functions
 
-ans=
 # Display menu if running setup manually from target.
+ans=$1
 [ "$2" != "1" ] && {
 	menu
 	ans=$?
 	[ "$ans" == '1' ] && { echo; exit; }
 }
+export EXTRAS=$ans
 
 sed -i "/^#Banner/ c\Banner /etc/issue.net" /etc/ssh/sshd_config
 
