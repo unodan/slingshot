@@ -24,19 +24,6 @@ is_installed() {
 	}
 }
 
-yes_no() {
-	echo -n "(Y/N)? "
-	while read -r -n 1 -s answer; do
-		[[ $answer = [YyNn] ]] && {
-			[[ $answer = [Yy] ]] && { retval=0; } || { retval=1; }
-			break;
-		}
-	done
-	echo
-
-	return $retval
-}
-
 yum() {
 	rval=0;
 
@@ -202,6 +189,19 @@ rev_ip() {
 
 get_ip() { 
 	return `ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'`
+}
+
+yes_no() {
+	echo -n "(Y/N)? "
+	while read -r -n 1 -s answer; do
+		[[ $answer = [YyNn] ]] && {
+			[[ $answer = [Yy] ]] && { retval=0; } || { retval=1; }
+			break;
+		}
+	done
+	echo
+
+	return $retval
 }
 
 action() {
