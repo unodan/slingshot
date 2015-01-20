@@ -9,10 +9,10 @@
 # Once script starts prevent ssh login until finished.
 systemctl stop sshd
 
-export EXTRAS=$1
 cd ~/scripts
 source ./settings
 source ./functions
+export EXTRAS=$1
 
 ans=
 # Display menu if running setup manually from target.
