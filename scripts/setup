@@ -10,7 +10,8 @@
 systemctl stop sshd
 
 export EXTRAS=$1
-source $(dirname $(readlink -f $0))/scripts/settings
+cd $(dirname $(readlink -f $0))/scripts
+source ./settings
 #source ~/scripts/settings 
 
 # This gets run if setup not started by install script.
