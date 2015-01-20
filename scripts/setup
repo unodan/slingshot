@@ -13,44 +13,10 @@ export EXTRAS=$1
 cd ~/scripts
 source ./settings
 
-# This gets run if setup not started by install script.
+# Display menu if running setup manually from target.
 [ "$2" != "1" ] && {
-	ans=
-	while true; do
-		clear
-		echo -e
-		echo -e "###############################################################################";
-		echo -e "#";
-		echo -e "#              Slingshot Server Configuration Script";
-		echo -e "#";
-		echo -e "###############################################################################";
-		echo -e "#";
-		echo -e "#                        *** PLEASE NOTE ***";
-		echo -e "#";
-		echo -e "# This script needs to connect to remote servers to download the required,";
-		echo -e "# software packages. Failure to connect to these sources will cause the,";
-		echo -e "# package install to fail, and any packages that depend on them. ";
-		echo -e "#";
-		echo -e "# The install log files are availble on the target host ($INET_IP) ~/logs.";
-		echo -e "#";
-		echo -e "###############################################################################"
-		echo -e "\nThis script will configure the remote server ($DOMAIN) at address ($INET_IP).";
-		echo -e "\nLocal IP=($LOCAL_IP), Target IP=($INET_IP), Target User=($USER_ID)";
-		echo -e
-		echo -e " b: Slingshot Base Install";
-		echo -e " e: Slingshot Base Install + Extras";
-		echo -e " q: Quit";
-		echo -e 
-		echo -n "Enter choice (b/e/q): ";
-		read ans;
-		case "$ans" in
-			b) break; ;;
-			e) break; ;;
-			q) echo; exit ;;
-		esac
-	done;
-
-	echo -e  "\n###############################################################################"
+	menu
+	ans=$?
 }
 
 
