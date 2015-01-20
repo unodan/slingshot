@@ -27,14 +27,13 @@ is_installed() {
 	}
 }
 
-asksure() {
-	echo -n "Are you sure (Y/N)? "
+yes_no() {
+	echo -n "(Y/N)? "
 	while read -r -n 1 -s answer; do
-		if [[ $answer = [YyNn] ]]; then
-			[[ $answer = [Yy] ]] && retval=0
-			[[ $answer = [Nn] ]] && retval=1
-			break
-		fi
+		[[ $answer = [YyNn] ]] && {
+			[[ $answer = [Yy] ]] && { retval=0; } || { retval=1; }
+			break;
+		}
 	done
 	echo
 
