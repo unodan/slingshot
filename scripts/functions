@@ -315,7 +315,7 @@ finalise() {
 }
 
 menu() {
-	retval=0;
+	retval='0';
 	while true; do
 		clear
 		echo -e
@@ -344,9 +344,9 @@ menu() {
 		echo -n "Enter choice (b/e/q): ";
 		read ans;
 		case "$ans" in
-			q) retval=1; break; ;;
-			b) retval=2; break; ;;
-			e) retval=3; break; ;;
+			'b') retval=$ans; break; ;;
+			'e') retval=$ans; break; ;;
+			'q') retval="1"; break; ;;
 		esac
 	done;
 
