@@ -269,14 +269,13 @@ footer() {
 		}
 	}
 
-	echo -e "\e[1;34m===============================================================================\e[0m\n"
+	echo -e "\e[1;34m===============================================================================\e[0m"
 
 	s=$[$(date +%s) - $start_time]; h=$[$s / 3600]; s=$[$s - $[$h * 3600]]; m=$[$s / 60]; s=$[$s - $[m * 60]]
 	[ "$h" != '0' ] && hours=" \e[1;33m$h\e[0m hours" || hours=""
 	[ "$m" != '0' ] && minutes=" \e[1;33m$m\e[0m minutes and" || minutes=""
 
-	echo -e "\e[1;34m===============================================================================\e[0m"
-	echo -e "\e[1;34m= \e[0mCurrent time$hours$minutes \e[1;33m$s\e[0m seconds."
+	echo -e "\e[1;34m= \e[0mCurrent runtime$hours$minutes \e[1;33m$s\e[0m seconds."
 	echo -e "\e[1;34m===============================================================================\e[0m\n\n"
 	echo 
 }
@@ -333,9 +332,10 @@ menu() {
 		echo -e "#";
 		echo -e "#                        *** PLEASE NOTE ***";
 		echo -e "#";
-		echo -e "# This script needs to connect to remote servers to download the required,";
-		echo -e "# software packages. Failure to connect to these sources will cause the,";
-		echo -e "# package install to fail, and any packages that depend on them. ";
+		echo -e "# This script has to connect to remote servers to download the required,";
+		echo -e "# source software packages. Failure to connect to these resources will cause the,";
+		echo -e "# package install to fail, and any packages that depend on them. Always view the log,";
+		echo -e "# files after the installation has finished for failures/errors.";
 		echo -e "#";
 		echo -e "# The install log files are availble on the target host ($INET_IP) ~/logs.";
 		echo -e "#";

@@ -7,10 +7,9 @@
 #
 ###############################################################################
 #
-cd $(dirname $(readlink -f $0))/scripts
-source constants
-source settings
-source functions
+source $(dirname $(readlink -f $0))/scripts/constants
+source $(dirname $(readlink -f $0))/scripts/settings
+source $(dirname $(readlink -f $0))/scripts/functions
 
 menu
 ans=$?
@@ -71,7 +70,7 @@ ans=$?
 }
 
 # Copy RSA public key to the remote host.
-echo -e "Connecting to the remote server >>> ($INET_IP)...\n"
+echo -e "Connecting to the target host >>> ($INET_IP)...\n"
 ssh-copy-id -i ~/.ssh/id_rsa.pub $ADM_USR@$INET_IP > /dev/null 2>&1
 
 # Copy the scripts directory to the remote host.
