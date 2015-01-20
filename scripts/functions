@@ -315,7 +315,7 @@ finalise() {
 }
 
 menu() {
-	retval=0;
+	retval="0";
 	while true; do
 		clear
 		echo -e
@@ -346,7 +346,7 @@ menu() {
 		case "$ans" in
 			b) retval=$ans; break; ;;
 			e) retval=$ans; break; ;;
-			q) retval=1; break; ;;
+			q) retval="1"; break; ;;
 		esac
 	done;
 
