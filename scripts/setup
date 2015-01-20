@@ -10,6 +10,7 @@
 systemctl stop sshd
 
 cd ~/scripts
+source ./constants
 source ./settings
 source ./functions
 export EXTRAS=$1
