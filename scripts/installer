@@ -7,9 +7,9 @@
 ###############################################################################
 #
 [ ! -f settings ] && {
-	echo -e "\n${FG_RED}================================================================================\e[0m"
-	echo -e "${FG_RED}= ERROR\e[0m: Could not find configuration (${FG_CYAN}$2\e[0m).";
-	echo -e "${FG_RED}================================================================================\e[0m\n"
+	echo -e "\n${FG_RED}================================================================================${FG_GREEN}"
+	echo -e "${FG_RED}= ERROR${FG_GREEN}: Could not find configuration (${FG_CYAN}$2${FG_GREEN}).";
+	echo -e "${FG_RED}================================================================================${FG_GREEN}\n"
 	exit
 }
 
@@ -47,13 +47,13 @@ action=$(basename $0)
 
 	for PACKAGE in $packages; do
 		[ "`is_installed base/$PACKAGE`" == "0" ] && [ ! -f base/$PACKAGE ] && {
-			echo -e "\n${FG_RED}================================================================================\e[0m"
-			echo -e "${FG_RED}= ERROR\e[0m: Could not find srcipt (${FG_CYAN}$PACKAGE\e[0m).";
-			echo -e "${FG_RED}================================================================================\e[0m\n"
+			echo -e "\n${FG_RED}================================================================================"
+			echo -e "${FG_RED}= ERROR${FG_GREEN}: Could not find srcipt (${FG_CYAN}$PACKAGE${FG_GREEN}).";
+			echo -e "${FG_RED}================================================================================${FG_GREEN}\n"
 		} || {
 			[ "`is_installed base/$PACKAGE`" == "1" ] && { PROP=$((0|$INSTALLED)); } || { PROP=0; ERR_CODE=0; } 
 			source ./base/$PACKAGE 2> ../logs/$PACKAGE.err | tee ../logs/$PACKAGE.log;
-			[ "$ERR_CODE" != "0" ] && { echo -e "Package (${FG_CYAN}$PACKAGE\e[0m) finished with errors.\n" >> ../logs/packages.err; }
+			[ "$ERR_CODE" != "0" ] && { echo -e "Package (${FG_CYAN}$PACKAGE${FG_GREEN}) finished with errors.\n" >> ../logs/packages.err; }
 		}
 		[ "$(basename $0)" != "installer" ] && break; 
 	done
@@ -68,10 +68,10 @@ action=$(basename $0)
 [ -f $SCRIPTS ] && rm -rf $SCRIPTS
 
 s=$[$(date +%s) - $start_time]; h=$[$s / 3600]; s=$[$s - $[$h * 3600]]; m=$[$s / 60]; s=$[$s - $[m * 60]]
-[ "$h" != '0' ] && hours=" ${FG_YELLOW}$h\e[0m hours" || hours=""
-[ "$m" != '0' ] && minutes=" ${FG_YELLOW}$m\e[0m minutes and" || minutes=""
+[ "$h" != '0' ] && hours=" ${FG_YELLOW}$h${FG_GREEN} hours" || hours=""
+[ "$m" != '0' ] && minutes=" ${FG_YELLOW}$m${FG_GREEN} minutes and" || minutes=""
 
-echo -e "${FG_BLUE}===============================================================================\e[0m"
-echo -e "${FG_BLUE}= \e[0m Finish runtime$hours$minutes ${FG_YELLOW}$s\e[0m seconds."
-echo -e "${FG_BLUE}===============================================================================\e[0m\n\n"
+echo -e "${FG_BLUE}==============================================================================="
+echo -e "${FG_BLUE}= ${FG_GREEN} Finish runtime$hours$minutes ${FG_YELLOW}$s${FG_GREEN} seconds."
+echo -e "${FG_BLUE}===============================================================================${FG_GREEN}\n\n"
 echo 

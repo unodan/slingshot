@@ -77,32 +77,32 @@ yum() {
 throw() {
 	case $1 in
 		$REMOVE_FAIL)
-			echo -e "\n${FG_RED}ERROR: \e[0mPackage (${FG_CYAN}$PACKAGE\e[0m) has failed to un-install.";
+			echo -e "\n${FG_RED}ERROR: ${FG_GREEN}Package (${FG_CYAN}$PACKAGE${FG_GREEN}) has failed to un-install.";
 		;;
 		$INSTALL_FAIL)
-			echo -e "\n${FG_RED}ERROR: \e[0mPackage (${FG_CYAN}$PACKAGE\e[0m) has failed to install.";
+			echo -e "\n${FG_RED}ERROR: ${FG_GREEN}Package (${FG_CYAN}$PACKAGE${FG_GREEN}) has failed to install.";
 		;;
 		$NOT_INSTALLED)
-			 echo -e "\n${FG_YELLOW}WARNING: \e[0mPackage (${FG_CYAN}$PACKAGE\e[0m) is not installed.";
+			 echo -e "\n${FG_YELLOW}WARNING: ${FG_GREEN}Package (${FG_CYAN}$PACKAGE${FG_GREEN}) is not installed.";
 		;;
 		$ALREADY_INSTALLED)
 			[[ $(($RUNTIME&$INSTALL_RESTORE)) == $INSTALL_RESTORE ]] && { 
-				echo -e "\n${FG_YELLOW}WARNING: \e[0mPackage (${FG_CYAN}$PACKAGE\e[0m) is already installed, doing (${FG_CYAN}restore\e[0m) install.\n";
+				echo -e "\n${FG_YELLOW}WARNING: ${FG_GREEN}Package (${FG_CYAN}$PACKAGE${FG_GREEN}) is already installed, doing (${FG_CYAN}restore${FG_GREEN}) install.\n";
 			} || {
-				[[ $(($RUNTIME&$INSTALL_DESTRUCTIVE)) == $INSTALL_DESTRUCTIVE ]] && { echo -e "\n${FG_YELLOW}WARNING: \e[0mPackage (${FG_CYAN}$PACKAGE\e[0m) is already installed, doing (${FG_RED}destructive\e[0m) install.\n"; }
+				[[ $(($RUNTIME&$INSTALL_DESTRUCTIVE)) == $INSTALL_DESTRUCTIVE ]] && { echo -e "\n${FG_YELLOW}WARNING: ${FG_GREEN}Package (${FG_CYAN}$PACKAGE${FG_GREEN}) is already installed, doing (${FG_RED}destructive${FG_GREEN}) install.\n"; }
 			} || {
-				[[ $(($RUNTIME&$INSTALL_UPDATE)) == $INSTALL_UPDATE ]] && { echo -e "\n${FG_YELLOW}WARNING: \e[0mUpdating package (${FG_CYAN}$PACKAGE\e[0m).\n";	}
+				[[ $(($RUNTIME&$INSTALL_UPDATE)) == $INSTALL_UPDATE ]] && { echo -e "\n${FG_YELLOW}WARNING: ${FG_GREEN}Updating package (${FG_CYAN}$PACKAGE${FG_GREEN}).\n";	}
 			}
 		;;
 	esac
 
 	[ "$EXIT_ON_ERROR" == "true" ] && [[ $(($ERR_CODE&$STOP)) == $STOP ]] && {
-		echo -e "Exiting script (${FG_CYAN}$PACKAGE\e[0m) do to previous error.\n";
+		echo -e "Exiting script (${FG_CYAN}$PACKAGE${FG_GREEN}) do to previous error.\n";
 		exit;
 	}
 
 	[ "$EXIT_ON_WARNING" == "true" ] && [[ $(($ERR_CODE&$STOP)) == $STOP ]] && {
-		echo -e "Exiting script (${FG_CYAN}$PACKAGE\e[0m) do to previous warning.\n";
+		echo -e "Exiting script (${FG_CYAN}$PACKAGE${FG_GREEN}) do to previous warning.\n";
 		exit;
 	}
 }
@@ -115,7 +115,7 @@ systemctl() {
 			[ "$rval" == "0" ] && { 
 				PROP=$(($PROP|$SERVICE_ON));
 			} || { 
-				echo -e "${FG_YELLOW}WARNING: \e[0mService (${FG_CYAN}$2\e[0m) failed to start."; 
+				echo -e "${FG_YELLOW}WARNING: ${FG_GREEN}Service (${FG_CYAN}$2${FG_GREEN}) failed to start."; 
 			} 
 		;;
 		stop)
@@ -124,7 +124,7 @@ systemctl() {
 			[ "$rval" == "0" ] && { 
 				PROP=$(($PROP&~$SERVICE_ON));
 			} || { 
-				echo -e "${FG_YELLOW}WARNING: \e[0mService (${FG_CYAN}$2\e[0m) failed has to stop."; 
+				echo -e "${FG_YELLOW}WARNING: ${FG_GREEN}Service (${FG_CYAN}$2${FG_GREEN}) failed has to stop."; 
 			}
 		;;
 		restart)
@@ -133,7 +133,7 @@ systemctl() {
 			[ "$rval" == "0" ] && { 
 				PROP=$(($PROP|$SERVICE_ON));
 			} || { 
-				echo -e "${FG_YELLOW}WARNING: \e[0mService (${FG_CYAN}$2\e[0m) failed has to re-start."; 
+				echo -e "${FG_YELLOW}WARNING: ${FG_GREEN}Service (${FG_CYAN}$2${FG_GREEN}) failed has to re-start."; 
 			}
 		;;
 		enable)
@@ -225,58 +225,58 @@ action() {
 
 header() {
 	[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { action="Installation"; } || { [[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { action="Removal"; } }
-	echo -e "${FG_BLUE}===============================================================================\e[0m"
-	echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA}Action: \e[0m$action of package (${FG_CYAN}$PACKAGE\e[0m)."
-	echo -e "${FG_CYAN}===============================================================================\e[0m"
-	echo -e "${FG_BLUE}= \e[0mRunning script (${FG_CYAN}$PACKAGE\e[0m) on (${FG_YELLOW}$DOMAIN\e[0m)." 
-	echo -e "${FG_CYAN}===============================================================================\e[0m"
+	echo -e "${FG_BLUE}==============================================================================="
+	echo -e "${FG_BLUE}= ${FG_GREEN}${FG_MAGENTA}Action: ${FG_GREEN}$action of package (${FG_CYAN}$PACKAGE)."
+	echo -e "${FG_CYAN}==============================================================================="
+	echo -e "${FG_BLUE}= ${FG_GREEN}Running script (${FG_CYAN}$PACKAGE${FG_GREEN}) on (${FG_YELLOW}$DOMAIN${FG_GREEN})." 
+	echo -e "${FG_CYAN}===============================================================================${FG_GREEN}"
 }
 
 footer() {
-	echo -e "\n${FG_CYAN}===============================================================================\e[0m"
+	echo -e "\n${FG_CYAN}===============================================================================${FG_GREEN}"
 	[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && {
 		[[ $(($PROP&$INSTALLED)) == $INSTALLED ]] && { 
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA} ACTION\e[0m: Installation of package (${FG_CYAN}$PACKAGE\e[0m).";
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA} RESULT\e[0m: Package (${FG_CYAN}$PACKAGE\e[0m) was installed (${FG_WHITE}successfully\e[0m).";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA} ACTION${FG_GREEN}: Installation of package (${FG_CYAN}$PACKAGE${FG_GREEN}).";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA} RESULT${FG_GREEN}: Package (${FG_CYAN}$PACKAGE${FG_GREEN}) was installed (${FG_WHITE}successfully${FG_GREEN}).";
 		} || {
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA} ACTION\e[0m: Installation of package (${FG_CYAN}$PACKAGE\e[0m).";
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA} RESULT\e[0m: Package (${FG_CYAN}$PACKAGE\e[0m) was installed (${FG_RED}failed\e[0m).";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA} ACTION${FG_GREEN}: Installation of package (${FG_CYAN}$PACKAGE${FG_GREEN}).";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA} RESULT${FG_GREEN}: Package (${FG_CYAN}$PACKAGE${FG_GREEN}) was installed (${FG_RED}failed${FG_GREEN}).";
 		}
 	}
 
 	[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && {
 		[[ $(($PROP&$INSTALLED)) == $INSTALLED ]] && { 
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA} ACTION\e[0m: Removal of package (${FG_CYAN}$PACKAGE\e[0m).";
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA} RESULT\e[0m: Package (${FG_CYAN}$PACKAGE\e[0m) has (${FG_RED}failed\e[0m) to un-install.";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA} ACTION${FG_GREEN}: Removal of package (${FG_CYAN}$PACKAGE${FG_GREEN}).";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA} RESULT${FG_GREEN}: Package (${FG_CYAN}$PACKAGE${FG_GREEN}) has (${FG_RED}failed${FG_GREEN}) to un-install.";
 		} || {
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA} ACTION\e[0m: Removal of package (${FG_CYAN}$PACKAGE\e[0m).";
-			[[ $ERR_CODE == "0" ]] && echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA} RESULT\e[0m: Package (${FG_CYAN}$PACKAGE\e[0m) was removed (${FG_WHITE}successfully\e[0m).";
-			[[ $(($ERR_CODE&$NOT_INSTALLED)) == $NOT_INSTALLED ]] && echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA} RESULT\e[0m: No action taken, package (${FG_CYAN}$PACKAGE\e[0m) is not currently installed.";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA} ACTION${FG_GREEN}: Removal of package (${FG_CYAN}$PACKAGE${FG_GREEN}).";
+			[[ $ERR_CODE == "0" ]] && echo -e "${FG_BLUE}= ${FG_MAGENTA} RESULT${FG_GREEN}: Package (${FG_CYAN}$PACKAGE${FG_GREEN}) was removed (${FG_WHITE}successfully${FG_GREEN}).";
+			[[ $(($ERR_CODE&$NOT_INSTALLED)) == $NOT_INSTALLED ]] && echo -e "${FG_BLUE}= ${FG_MAGENTA} RESULT${FG_GREEN}: No action taken, package (${FG_CYAN}$PACKAGE${FG_GREEN}) is not currently installed.";
 		}
 	}	
 
 	[ $SERVICE ] && {
 		[[ $(($PROP&$SERVICE_ON)) == $SERVICE_ON ]] && { 
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA}SERVICE\e[0m: Service (${FG_CYAN}$SERVICE\e[0m) is currently running.";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA}SERVICE${FG_GREEN}: Service (${FG_CYAN}$SERVICE${FG_GREEN}) is currently running.";
 		} || { 
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA}SERVICE\e[0m: Service (${FG_CYAN}$SERVICE\e[0m) is currently not running.";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA}SERVICE${FG_GREEN}: Service (${FG_CYAN}$SERVICE${FG_GREEN}) is currently not running.";
 		}
 
 		[[ $(($PROP&$ENABLE)) == $ENABLE ]] && { 
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA}STARTUP\e[0m: Service (${FG_CYAN}$SERVICE\e[0m) will start at boot time.";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA}STARTUP${FG_GREEN}: Service (${FG_CYAN}$SERVICE${FG_GREEN}) will start at boot time.";
 		} || { 
-			echo -e "${FG_BLUE}= \e[0m${FG_MAGENTA}SERVICE\e[0m: Service (${FG_CYAN}$SERVICE\e[0m) will not start at boot time.";
+			echo -e "${FG_BLUE}= ${FG_MAGENTA}SERVICE${FG_GREEN}: Service (${FG_CYAN}$SERVICE${FG_GREEN}) will not start at boot time.";
 		}
 	}
 
-	echo -e "${FG_BLUE}===============================================================================\e[0m"
+	echo -e "${FG_BLUE}===============================================================================${FG_GREEN}"
 
 	s=$[$(date +%s) - $start_time]; h=$[$s / 3600]; s=$[$s - $[$h * 3600]]; m=$[$s / 60]; s=$[$s - $[m * 60]]
-	[ "$h" != '0' ] && hours=" ${FG_YELLOW}$h\e[0m hours" || hours=""
-	[ "$m" != '0' ] && minutes=" ${FG_YELLOW}$m\e[0m minutes and" || minutes=""
+	[ "$h" != '0' ] && hours=" ${FG_YELLOW}$h${FG_GREEN} hours" || hours=""
+	[ "$m" != '0' ] && minutes=" ${FG_YELLOW}$m${FG_GREEN} minutes and" || minutes=""
 
-	echo -e "${FG_BLUE}= \e[0m Current runtime$hours$minutes ${FG_YELLOW}$s\e[0m seconds."
-	echo -e "${FG_BLUE}===============================================================================\e[0m\n"
+	echo -e "${FG_BLUE}= ${FG_GREEN} Current runtime$hours$minutes ${FG_YELLOW}$s${FG_GREEN} seconds."
+	echo -e "${FG_BLUE}===============================================================================${FG_GREEN}\n"
 }
 
 initialise() {
@@ -294,18 +294,18 @@ initialise() {
 	echo "export PS1=\"\u@$DOMAIN:\w> \"" >> /etc/bashrc
 
 	# Update all installed packages.
-	echo -e "${FG_BLUE}===============================================================================\e[0m"
-	echo -e "${FG_BLUE}= \e[0m${FG_WHITE}Updating installed packages."
-	echo -e "${FG_BLUE}=${FG_CYAN}==============================================================================\e[0m"
+	echo -e "${FG_BLUE}==============================================================================="
+	echo -e "${FG_BLUE}= ${FG_WHITE}Updating installed packages."
+	echo -e "${FG_BLUE}=${FG_CYAN}==============================================================================${FG_GREEN}"
 
 	echo;
 	$YUM -y clean all
 	$YUM -y install deltarpm 
 	$YUM -y update
 
-	echo -e "${FG_BLUE}=${FG_CYAN}==============================================================================\e[0m"
-	echo -e "${FG_BLUE}= \e[0m${FG_WHITE}Finished updating installed packages."	
-	echo -e "${FG_BLUE}===============================================================================\e[0m"
+	echo -e "${FG_BLUE}=${FG_CYAN}=============================================================================="
+	echo -e "${FG_BLUE}= ${FG_WHITE}Finished updating installed packages."	
+	echo -e "${FG_BLUE}===============================================================================${FG_GREEN}"
 	echo -e "\n\n"
 }
 
@@ -325,11 +325,11 @@ menu() {
 		echo -e
 		echo -e "###############################################################################";
 		echo -e
-		echo -e "              ${FG_YELLOW}Slingshot Server Configuration Script\e[0m";
+		echo -e "              ${FG_YELLOW}Slingshot Server Configuration Script${FG_GREEN}";
 		echo -e 
 		echo -e "###############################################################################";
 		echo -e 
-		echo -e "                       *** \e[0m${FG_MAGENTA}PLEASE NOTE\e[0m ***";
+		echo -e "                       *** ${FG_MAGENTA}PLEASE NOTE${FG_GREEN} ***";
 		echo -e 
 		echo -e " This script has to connect to remote servers to download the required,";
 		echo -e " source software packages. Failure to connect to these resources will cause the,";
