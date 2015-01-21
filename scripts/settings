@@ -62,6 +62,12 @@ OU="Information Technology Services"
 CN="www.$DOMAIN"
 E="me@$DOMAIN"
 
+# The size of the private key to generate in bits.
+NUMBITS=8192
+
+# Certificate Expiration, Number of  Days.
+SSL_CERT_EXP_DAYS=365
+
 # Name server settings
 MS1_NAME=mail
 

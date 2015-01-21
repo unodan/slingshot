@@ -21,7 +21,7 @@ header
 	openssl genrsa -out /etc/pki/tls/private/$DOMAIN.key 8192 2>&1 /dev/null
 	[ "$?" == "0" ] && {
 		chmod 400 /etc/pki/tls/private/$DOMAIN.key
-		openssl req -new -x509 -nodes -sha1 -days 3650 -key /etc/pki/tls/private/$DOMAIN.key -out /etc/pki/tls/certs/$DOMAIN.crt -subj "/C=$C/ST=$ST/L=$L/O=$O/OU=$OU/CN=$CN/emailAddress=$E"
+		openssl req -new -x509 -nodes -sha1 -days $SSL_CERT_EXP_DAYS -key /etc/pki/tls/private/$DOMAIN.key -out /etc/pki/tls/certs/$DOMAIN.crt -subj "/C=$C/ST=$ST/L=$L/O=$O/OU=$OU/CN=$CN/emailAddress=$E"
 
 		[ "$?" == "0" ] && {
 			chmod 644 /etc/pki/tls/certs/$DOMAIN.crt
