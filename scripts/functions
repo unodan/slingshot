@@ -325,13 +325,13 @@ menu() {
 		echo -e "${BG_BLACK}";
 		clear
 		echo -e
-		echo -e "###############################################################################";
+		echo -e "${FG_BLUE}###############################################################################";
 		echo -e
 		echo -e "              ${FG_YELLOW}Slingshot Server Configuration Script${FG_GREEN}";
 		echo -e 
-		echo -e "###############################################################################";
+		echo -e "${FG_BLUE}###############################################################################";
 		echo -e 
-		echo -e "                       *** ${FG_MAGENTA}PLEASE NOTE${FG_GREEN} ***";
+		echo -e "                       ${FG_GREEN}*** ${FG_MAGENTA}PLEASE NOTE${FG_GREEN} ***";
 		echo -e 
 		echo -e " ${FG_WHITE}This script has to connect to remote servers to download the required,";
 		echo -e " source software packages. Failure to connect to these resources will cause the,";
@@ -357,7 +357,7 @@ menu() {
 		esac
 	done;
 
-	echo  -e "\n###############################################################################"
+	echo  -e "\n${FG_WHITE}###############################################################################${FG_GREEN}"
 
 	return $retval
 }
