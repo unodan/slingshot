@@ -83,4 +83,4 @@ echo -e "\n"
 # Login to the remote host, make scripts executable then run setup.
 ssh $ADM_USR@$INET_IP "cd ~/scripts && chmod 500 * && ~/scripts/setup $ans 1"
 
-echo -e 
+echo -e "${RESET_COLORS}"
