@@ -27,7 +27,7 @@ header
 			chmod 644 /etc/pki/tls/certs/$DOMAIN.crt
 			cat /etc/pki/tls/certs/$DOMAIN.crt /etc/pki/tls/private/$DOMAIN.key > /etc/ssl/$DOMAIN.pem
 			chmod 400 /etc/ssl/$DOMAIN.pem
-			echo -e "${FG_WHITE}SUCCESS:${FG_GREEN}Created public and private (${FG_MAGENTA}ssl\e[0m) encryption keys."
+			echo -e "${FG_WHITE}SUCCESS:${FG_GREEN}Created public and private (${FG_MAGENTA}ssl${FG_GREEN}) encryption keys."
 			PROP=$(($PROP|$INSTALLED));
 		}
 	} || {
