@@ -23,10 +23,10 @@ header
 		done;
 
 		for i in 0 1 2 3 4; do
-			echo -e "\n${FG_YELLOW}NOTICE: ${FG_LIGHT_GREEN}Synchronizing time with server (${FG_CYAN}$i.north-america.pool.ntp.org${FG_LIGHT_GREEN}).\n"
+			echo -e "\n${FG_YELLOW}NOTICE: ${FG_GREEN}Synchronizing time with server (${FG_CYAN}$i.north-america.pool.ntp.org${FG_GREEN}).\n"
 			ntpdate $i.north-america.pool.ntp.org; rval=$?;
 			[ "$rval" == "0" ] && {
-				echo -e "\n${FG_WHITE}SUCCESS: ${FG_LIGHT_GREEN}Connected to and synchronized with time server (${FG_CYAN}$i.north-america.pool.ntp.org${FG_LIGHT_GREEN})."
+				echo -e "\n${FG_WHITE}SUCCESS: ${FG_GREEN}Connected to and synchronized with time server (${FG_CYAN}$i.north-america.pool.ntp.org${FG_GREEN})."
 				break;
 			}
 		done;
@@ -34,7 +34,7 @@ header
 		cp -f /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
 		ln -sf ../usr/share/zoneinfo/America/Toronto /etc/localtime
 
-		[ "$rval" != "0" ] && { echo -e "\n${FG_RED}ERROR: ${FG_LIGHT_GREEN}Could not connected with time servers."; }
+		[ "$rval" != "0" ] && { echo -e "\n${FG_RED}ERROR: ${FG_GREEN}Could not connected with time servers."; }
 
 		systemctl start $SERVICE;
 		systemctl enable $SERVICE;

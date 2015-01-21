@@ -8,16 +8,16 @@
 #
 header
 [[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
-	echo -e "\n${FG_YELLOW}NOTICE:${FG_LIGHT_GREEN}Removing public and private (${FG_MAGENTA}ssl\e[0m) encryption keys."
+	echo -e "\n${FG_YELLOW}NOTICE:${FG_GREEN}Removing public and private (${FG_MAGENTA}ssl\e[0m) encryption keys."
 	[ -f /etc/pki/tls/private/$DOMAIN.key ] && {
 		rm -f /etc/pki/tls/private/$DOMAIN.key /etc/pki/tls/certs/$DOMAIN.crt /etc/ssl/$DOMAIN.pem 
-		echo -e "\n${FG_WHITE}SUCCESS:${FG_LIGHT_GREEN}Removed public and private (${FG_MAGENTA}ssl${FG_LIGHT_GREEN}) encryption keys."
+		echo -e "\n${FG_WHITE}SUCCESS:${FG_GREEN}Removed public and private (${FG_MAGENTA}ssl${FG_GREEN}) encryption keys."
 		[ "$?" == "0" ] && { PROP=$(($PROP&~$INSTALLED)); } 
 	}
 }
 
 [[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
-	echo -e "\n${FG_YELLOW}NOTICE:${FG_LIGHT_GREEN}Creating public and private (${FG_MAGENTA}ssl${FG_LIGHT_GREEN}) encryption keys."
+	echo -e "\n${FG_YELLOW}NOTICE:${FG_GREEN}Creating public and private (${FG_MAGENTA}ssl${FG_GREEN}) encryption keys."
 	openssl genrsa -out /etc/pki/tls/private/$DOMAIN.key 8192 2>&1 /dev/null
 	[ "$?" == "0" ] && {
 		chmod 400 /etc/pki/tls/private/$DOMAIN.key
@@ -27,11 +27,11 @@ header
 			chmod 644 /etc/pki/tls/certs/$DOMAIN.crt
 			cat /etc/pki/tls/certs/$DOMAIN.crt /etc/pki/tls/private/$DOMAIN.key > /etc/ssl/$DOMAIN.pem
 			chmod 400 /etc/ssl/$DOMAIN.pem
-			echo -e "${FG_WHITE}SUCCESS:${FG_LIGHT_GREEN}Created public and private (${FG_MAGENTA}ssl\e[0m) encryption keys."
+			echo -e "${FG_WHITE}SUCCESS:${FG_GREEN}Created public and private (${FG_MAGENTA}ssl\e[0m) encryption keys."
 			PROP=$(($PROP|$INSTALLED));
 		}
 	} || {
-		echo -e "\n${FG_RED}ERROR:${FG_LIGHT_GREEN}Could not create public and private encryption keys."
+		echo -e "\n${FG_RED}ERROR:${FG_GREEN}Could not create public and private encryption keys."
 	}
 }
 footer
