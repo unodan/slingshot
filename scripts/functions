@@ -273,10 +273,10 @@ footer() {
 	echo -e "${FG_BLUE}===============================================================================${FG_GREEN}"
 
 	s=$[$(date +%s) - $start_time]; h=$[$s / 3600]; s=$[$s - $[$h * 3600]]; m=$[$s / 60]; s=$[$s - $[m * 60]]
-	[ "$h" != '0' ] && hours=" ${FG_YELLOW}$h${FG_GREEN} hours" || hours=""
-	[ "$m" != '0' ] && minutes=" ${FG_YELLOW}$m${FG_GREEN} minutes and" || minutes=""
+	[ "$h" != '0' ] && hours=" ${FG_YELLOW}${h}${FG_GREEN} hours" || hours=""
+	[ "$m" != '0' ] && minutes=" ${FG_YELLOW}${m}${FG_GREEN} minutes and" || minutes=""
 
-	echo -e "${FG_BLUE}= ${FG_GREEN} Current runtime$hours$minutes ${FG_YELLOW}$s${FG_GREEN} seconds."
+	echo -e "${FG_BLUE}= ${FG_GREEN} Current runtime${hours}${minutes} ${FG_YELLOW}${s}${FG_GREEN} seconds."
 	echo -e "${FG_BLUE}===============================================================================${FG_GREEN}\n"
 }
 
