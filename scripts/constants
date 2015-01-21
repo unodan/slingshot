@@ -76,7 +76,7 @@ BG_MAGENTA="\e[1;45m"
 BG_CYAN="\e[1;46m"
 BG_WHITE="\e[1;47m"
 
-
+SET_SCREEN=""
 
 
 

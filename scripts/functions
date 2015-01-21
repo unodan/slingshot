@@ -225,7 +225,7 @@ action() {
 
 header() {
 	[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { action="Installation"; } || { [[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { action="Removal"; } }
-	echo -e "BG_BLACK";
+	echo -e "${BG_BLACK}";
 	echo -e "${FG_BLUE}==============================================================================="
 	echo -e "${FG_BLUE}= ${FG_GREEN}${FG_MAGENTA}Action: ${FG_GREEN}$action of package (${FG_CYAN}$PACKAGE)."
 	echo -e "${FG_CYAN}==============================================================================="
@@ -322,7 +322,7 @@ finalise() {
 menu() {
 	retval=0;
 	while true; do
-		echo -e "BG_BLACK";
+		echo -e "${BG_BLACK}";
 		clear
 		echo -e
 		echo -e "###############################################################################";
