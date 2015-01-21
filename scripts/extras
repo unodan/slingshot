@@ -42,12 +42,12 @@ que=(
 		[ "`is_installed queue/$PACKAGE`" == "0" ] && [ ! -f queue/$PACKAGE ] && {
 			echo -e "${BG_BLACK}";
 			echo -e "\n${FG_RED}================================================================================"
-			echo -e "${FG_RED}= ERROR${FG_GREEN}: Could not find srcipt (${FG_CYAN}$PACKAGE${FG_GREEN}).";
-			echo -e "${FG_RED}================================================================================${FG_GREEN}\n"
+			echo -e "${FG_RED}= ERROR${FG_LIGHT_GREEN}: Could not find srcipt (${FG_CYAN}$PACKAGE${FG_LIGHT_GREEN}).";
+			echo -e "${FG_RED}================================================================================${FG_LIGHT_GREEN}\n"
 		} || {
 			[ "`is_installed queue/$PACKAGE`" == "1" ] && { PROP=$((0|$INSTALLED)); } || { PROP=0; ERR_CODE=0; } 
 			source ./queue/$PACKAGE 2> ../logs/$PACKAGE.err | tee ../logs/$PACKAGE.log;
-			[ "$ERR_CODE" != "0" ] && { echo -e "Package (${FG_CYAN}$PACKAGE${FG_GREEN}) finished with errors.\n" >> ../logs/packages.err; }
+			[ "$ERR_CODE" != "0" ] && { echo -e "Package (${FG_CYAN}$PACKAGE${FG_LIGHT_GREEN}) finished with errors.\n" >> ../logs/packages.err; }
 		}
 		[ "$(basename $0)" != "installer" ] && break; 
 	done
