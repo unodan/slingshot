@@ -9,19 +9,19 @@ SERVICE=
 
 header
 [[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
-	echo -e "\n\e[1;33mNOTICE: \e[0mRemoving user (\e[1;36m$USER_ID\e[0m) from system."
+	echo -e "\n${FG_YELLOW}NOTICE: ${FG_GREEN}Removing user (${FG_CYAN}$USER_ID${FG_GREEN}) from system."
 	
 	[[ `cat /etc/passwd | grep "$USER_ID"` ]] && { 
 		userdel -r "$USER_ID";
 		[ "$?" == "0" ] && {	
 			groupdel $USER_ID;
-			echo -e "\e[1;37mSUCCESS: \e[0mUser (\e[1;36m$USER_ID\e[0m), home folder and mail mailbox have been removed.";
+			echo -e "${FG_WHITE}SUCCESS: ${FG_GREEN}User (${FG_CYAN}$USER_ID${FG_GREEN}), home folder and mail mailbox have been removed.";
 		}
-	} || { echo -e "\n\e[1;33mWARNING: \e[0mUser (\e[1;36m$USER_ID\e[0m) does not exsits."; }
+	} || { echo -e "\n${FG_YELLOW}WARNING: ${FG_GREEN}User (${FG_CYAN}$USER_ID${FG_GREEN}) does not exsits."; }
 }
 
 [[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
-	echo -e "\n\e[1;33mNOTICE: \e[0mAdding user (\e[1;36m$USER_ID\e[0m) to system.";
+	echo -e "\n${FG_YELLOW}NOTICE: ${FG_GREEN}Adding user (${FG_CYAN}$USER_ID${FG_GREEN}) to system.";
 	
 	[[ `cat /etc/passwd | grep "$USER_ID"` ]] && { 
 		userdel -r "$USER_ID"; 
@@ -37,9 +37,9 @@ header
 			newaliases;
 			[ "$?" == "0" ] && { 
 				PROP=$(($PROP|$INSTALLED)); 
-				echo -e "\e[1;37mSUCCESS: \e[0mUser (\e[1;36m$USER_ID\e[0m) has been added to system users.";
+				echo -e "${FG_WHITE}SUCCESS: ${FG_GREEN}User (${FG_CYAN}$USER_ID${FG_GREEN}) has been added to system users.";
 			} || {
-				echo -e "\e[1;31mERROR: \e[0mCould not add user (\e[1;36m$USER_ID\e[0m) to system users.";
+				echo -e "${FG_RED}ERROR: ${FG_GREEN}Could not add user (${FG_CYAN}$USER_ID${FG_GREEN}) to system users.";
 			}
 		}
 	}
