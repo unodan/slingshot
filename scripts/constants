@@ -58,14 +58,6 @@ RUNTIME=$(($INSTALL_UPDATE))
 # Terminal colors, Foreground colors and Background colors
 ###############################################################################
 
-# Text attributes
-# 0	All attributes off
-# 1	Bold on
-# 4	Underscore (on monochrome display adapter only)
-# 5	Blink on
-# 7	Reverse video on
-# 8	Concealed on
-
 FG_BLACK="\e[1;30m"
 FG_RED="\e[1;31m"
 FG_GREEN="\e[1;32m"
