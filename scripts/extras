@@ -40,13 +40,13 @@ que=(
     
 	for PACKAGE in $packages; do
 		[ "`is_installed queue/$PACKAGE`" == "0" ] && [ ! -f queue/$PACKAGE ] && {
-			echo -e "\n\e[1;31m================================================================================\e[0m"
-			echo -e "\e[1;31m= ERROR\e[0m: Could not find srcipt (\e[1;36m$PACKAGE\e[0m).";
-			echo -e "\e[1;31m================================================================================\e[0m\n"
+			echo -e "\n${FG_RED}================================================================================\e[0m"
+			echo -e "${FG_RED}= ERROR\e[0m: Could not find srcipt (${FG_CYAN}$PACKAGE\e[0m).";
+			echo -e "${FG_RED}================================================================================\e[0m\n"
 		} || {
 			[ "`is_installed queue/$PACKAGE`" == "1" ] && { PROP=$((0|$INSTALLED)); } || { PROP=0; ERR_CODE=0; } 
 			source ./queue/$PACKAGE 2> ../logs/$PACKAGE.err | tee ../logs/$PACKAGE.log;
-			[ "$ERR_CODE" != "0" ] && { echo -e "Package (\e[1;36m$PACKAGE\e[0m) finished with errors.\n" >> ../logs/packages.err; }
+			[ "$ERR_CODE" != "0" ] && { echo -e "Package (${FG_CYAN}$PACKAGE\e[0m) finished with errors.\n" >> ../logs/packages.err; }
 		}
 		[ "$(basename $0)" != "installer" ] && break; 
 	done
