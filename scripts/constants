@@ -96,7 +96,7 @@ BG_LIGHT_MAGENTA="\e[1;105m"
 BG_LIGHT_CYAN="\e[1;106m"
 BG_LIGHT_WHITE="\e[1;107m"
 
-
+RESET_ALL="\x1b[0m"
 
 
 
