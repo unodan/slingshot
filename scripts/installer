@@ -47,6 +47,7 @@ action=$(basename $0)
 
 	for PACKAGE in $packages; do
 		[ "`is_installed base/$PACKAGE`" == "0" ] && [ ! -f base/$PACKAGE ] && {
+			echo -e "BG_BLACK";
 			echo -e "\n${FG_RED}================================================================================"
 			echo -e "${FG_RED}= ERROR${FG_GREEN}: Could not find srcipt (${FG_CYAN}$PACKAGE${FG_GREEN}).";
 			echo -e "${FG_RED}================================================================================${FG_GREEN}\n"
