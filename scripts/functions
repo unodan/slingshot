@@ -344,11 +344,11 @@ menu() {
 		echo -e "\nThis script will configure the remote server (${FG_WHITE}$DOMAIN${FG_GREEN}) at address (${FG_WHITE}$INET_IP${FG_GREEN}).";
 		echo -e "\nLocal IP=(${FG_WHITE}$LOCAL_IP${FG_GREEN}), Target IP=(${FG_WHITE}$INET_IP${FG_GREEN}), Target User=(${FG_WHITE}$USER_ID${FG_GREEN})";
 		echo -e
-		echo -e " b: Slingshot Base Install";
-		echo -e " e: Slingshot Base Install + Extras";
-		echo -e " q: Quit";
+		echo -e " ${FG_MAGENTA}b${FG_GREEN}) Slingshot Base Install";
+		echo -e " ${FG_MAGENTA}e${FG_GREEN}) Slingshot Base Install + Extras";
+		echo -e " ${FG_MAGENTA}q${FG_GREEN}) Quit";
 		echo -e 
-		echo -n "Enter choice (b/e/q): ";
+		echo -n "Enter choice (${FG_MAGENTA}b${FG_GREEN}/${FG_MAGENTA}e${FG_GREEN}/${FG_MAGENTA}q${FG_GREEN}): ";
 		read ans;
 		case "$ans" in
 			'q') retval=1; break; ;;
