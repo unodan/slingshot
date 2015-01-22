@@ -76,7 +76,4 @@ BG_WHITE="\e[1;47m"
 
 RESET_ALL="\e[0m"
 RESET_COLORS="\e[39;49m"
-
-
-
-
+#
