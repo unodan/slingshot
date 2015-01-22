@@ -69,10 +69,10 @@ action=$(basename $0)
 [ -f $SCRIPTS ] && rm -rf $SCRIPTS
 
 s=$[$(date +%s) - $start_time]; h=$[$s / 3600]; s=$[$s - $[$h * 3600]]; m=$[$s / 60]; s=$[$s - $[m * 60]]
-[ "$h" != '0' ] && hours=" ${FG_YELLOW}${h}${FG_GREEN} hours" || hours=""
-[ "$m" != '0' ] && minutes=" ${FG_YELLOW}${m}${FG_GREEN} minutes and" || minutes=""
+[ "$h" != '0' ] && hours=" ${FG_WHITE}${h}${FG_YELLOW} hours" || hours=""
+[ "$m" != '0' ] && minutes=" ${FG_WHITE}${m}${FG_YELLOW} minutes and" || minutes=""
 
 echo -e "${FG_BLUE}==============================================================================="
-echo -e "${FG_BLUE}= ${FG_GREEN} Finish runtime${hours}${minutes} ${FG_YELLOW}${s}${FG_GREEN} seconds."
+echo -e "${FG_BLUE}= ${FG_YELLOW} Finish runtime${hours}${minutes} ${FG_WHITE}${s}${FG_YELLOW} seconds."
 echo -e "${FG_BLUE}===============================================================================${FG_GREEN}\n\n"
 echo 
