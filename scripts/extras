@@ -26,7 +26,7 @@ que=(
 	"phpmyadmin"
 	"wordpress"
 );
-
+ 
 [ "$action" == "installer" ] && { action=$1; packages="${que[@]}"; } || { packages="$@"; }
 
 [ "$action" == "install" ] || [ "$action" == "remove" ] && {
