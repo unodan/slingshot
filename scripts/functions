@@ -335,8 +335,8 @@ menu() {
 		echo -e 
 		echo -e " ${FG_WHITE}This script has to connect to remote servers to download the required,";
 		echo -e " source software packages. Failure to connect to these resources will cause the,";
-		echo -e " package being installed to fail and possibly any packages that depend on it. Always, ";
-		echo -e " review the log files after the installation has finished for any errors.";
+		echo -e " package being installed to fail and possibly any packages that depend on it.";
+		echo -e " Always review the log files after installation for any errors.";
 		echo -e 
 		echo -e " ${FG_YELLOW}The install log files are availble at (${FG_MAGENTA}~/logs${FG_YELLOW}) on the target host (${FG_MAGENTA}$INET_IP${FG_YELLOW}).";
 		echo -e 

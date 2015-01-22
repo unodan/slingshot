@@ -54,7 +54,7 @@ INSTALL_DESTRUCTIVE=$(( 1 << 4 ))
 RUNTIME=$(($INSTALL_UPDATE))
 
 
-# Terminal colors, Foreground colors and Background colors
+# Terminal colors, Foreground and Background
 ###############################################################################
 FG_BLACK="\e[1;30m"
 FG_RED="\e[1;31m"
