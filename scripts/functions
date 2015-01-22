@@ -348,7 +348,7 @@ menu() {
 		echo -e " e: Slingshot Base Install + Extras";
 		echo -e " q: Quit";
 		echo -e 
-		echo -n "Enter choice (b/e/q): ${FG_WHITE}";
+		echo -n "Enter choice (b/e/q): ";
 		read ans;
 		case "$ans" in
 			'q') retval=1; break; ;;
