@@ -70,14 +70,14 @@ ans=$?
 }
 
 # Copy RSA public key to the remote host.
-echo -e "Connecting to the target host >>> ($INET_IP)...\n"
+echo -e "Connecting to the target host >>> (${FG_MAGENTA}$INET_IP${FG_GREEN})...\n"
 ssh-copy-id -i ~/.ssh/id_rsa.pub $ADM_USR@$INET_IP > /dev/null 2>&1
 
 # Copy the scripts directory to the remote host.
-echo -e "\n###############################################################################"
-echo -e "\n{FG_WHITE}Copying scripts to target host {FG_GREEN}(${FG_MAGENTA}$INET_IP{FG_GREEN})...\n"
+echo -e "\n${FG_BLUE}###############################################################################"
+echo -e "\n${FG_WHITE}Copying scripts to target host ${FG_GREEN}(${FG_MAGENTA}$INET_IP${FG_GREEN})...\n"
 scp -r scripts $ADM_USR@$INET_IP:~
-echo -e "\n###############################################################################"
+echo -e "\n${FG_BLUE}###############################################################################"
 echo -e "\n"
 
 # Login to the remote host, make scripts executable then run setup.
