@@ -54,10 +54,8 @@ INSTALL_DESTRUCTIVE=$(( 1 << 4 ))
 RUNTIME=$(($INSTALL_UPDATE))
 
 
-
 # Terminal colors, Foreground colors and Background colors
 ###############################################################################
-
 FG_BLACK="\e[1;30m"
 FG_RED="\e[1;31m"
 FG_GREEN="\e[1;32m"
@@ -75,26 +73,6 @@ BG_BLUE="\e[1;44m"
 BG_MAGENTA="\e[1;45m"
 BG_CYAN="\e[1;46m"
 BG_WHITE="\e[1;47m"
-
-
-
-FG_LIGHT_BLACK="\e[1;90m"
-FG_LIGHT_RED="\e[1;91m"
-FG_LIGHT_GREEN="\e[1;92m"
-FG_LIGHT_YELLOW="\e[1;93m"
-FG_LIGHT_BLUE="\e[1;94m"
-FG_LIGHT_MAGENTA="\e[1;95m"
-FG_LIGHT_CYAN="\e[1;96m"
-FG_LIGHT_WHITE="\e[1;97m"
-
-BG_LIGHT_BLACK="\e[1;100m"
-BG_LIGHT_RED="\e[1;101m"
-BG_LIGHT_GREEN="\e[1;102m"
-BG_LIGHT_YELLOW="\e[1;103m"
-BG_LIGHT_BLUE="\e[1;104m"
-BG_LIGHT_MAGENTA="\e[1;105m"
-BG_LIGHT_CYAN="\e[1;106m"
-BG_LIGHT_WHITE="\e[1;107m"
 
 RESET_ALL="\e[0m"
 RESET_COLORS="\e[39;49m"
