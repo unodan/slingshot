@@ -338,7 +338,7 @@ menu() {
 		echo -e " package being installed to fail and possibly any packages that depend on it.";
 		echo -e " Always review the log files after installation for any errors.";
 		echo -e 
-		echo -e " ${FG_YELLOW}The install log files are availble at (${FG_MAGENTA}~/logs${FG_YELLOW}) on the target host (${FG_MAGENTA}$INET_IP${FG_YELLOW}).";
+		echo -e " ${FG_YELLOW}The log files are availble at (${FG_MAGENTA}~/logs${FG_YELLOW}) on the target host (${FG_MAGENTA}$INET_IP${FG_YELLOW}).";
 		echo -e 
 		echo -e "${FG_BLUE}###############################################################################${FG_GREEN}"
 		echo -e "\nThis script will configure the remote server (${FG_WHITE}$DOMAIN${FG_GREEN}) at address (${FG_WHITE}$INET_IP${FG_GREEN}).";
