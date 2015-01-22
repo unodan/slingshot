@@ -348,7 +348,7 @@ menu() {
 		echo -e " ${FG_MAGENTA}e${FG_GREEN}) Slingshot Base Install + Extras";
 		echo -e " ${FG_MAGENTA}q${FG_GREEN}) Quit";
 		echo -e 
-		echo -n "Enter choice (${FG_MAGENTA}b${FG_GREEN}/${FG_MAGENTA}e${FG_GREEN}/${FG_MAGENTA}q${FG_GREEN}): ";
+		echo -en "Enter choice (${FG_MAGENTA}b${FG_GREEN}/${FG_MAGENTA}e${FG_GREEN}/${FG_MAGENTA}q${FG_GREEN}): ";
 		read ans;
 		case "$ans" in
 			'q') retval=1; break; ;;
