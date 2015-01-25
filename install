@@ -30,7 +30,7 @@ ans=$?
 
 		echo -e
 		[[ $char == 'n' ]] && {
-			echo -e "Script aborted, nothing was changed.\n"
+			echo -e "${FG_WHITE}Script aborted, nothing was changed.\n${FG_GREEN}"
 			exit 0
 		} || {
 			sed -i "/$INET_IP/d" ~/.ssh/known_hosts
@@ -74,11 +74,13 @@ echo -e "Connecting to the target host >>> (${FG_MAGENTA}$INET_IP${FG_GREEN})...
 ssh-copy-id -i ~/.ssh/id_rsa.pub $ADM_USR@$INET_IP > /dev/null 2>&1
 
 # Copy the scripts directory to the remote host.
-echo -e "\n${FG_YELLOW}###############################################################################"
-echo -e "\n${FG_WHITE}Copying scripts to target host ${FG_GREEN}(${FG_MAGENTA}$INET_IP${FG_GREEN})...\n"
-scp -r scripts $ADM_USR@$INET_IP:~
-echo -e "\n${FG_YELLOW}###############################################################################"
-echo -e "\n${FG_GREEN}"
+echo -e "\n${FG_YELLOW}###############################################################################${FG_GREEN}"
+
+echo -e "\n${FG_WHITE}Copy scripts to target host ${FG_GREEN}(${FG_MAGENTA}$INET_IP${FG_GREEN})...\n"
+scp -r scripts $ADM_USR@$INET_IP:~ 
+[ "$?" != "0" ] && { echo -e "${FG_WHITE}\nInstallation aborted.\n${FG_GREEN}"; exit; }
+
+echo -e "\n${FG_YELLOW}###############################################################################${FG_GREEN}"
 
 # Login to the remote host, make scripts executable then run setup.
 ssh $ADM_USR@$INET_IP "cd ~/scripts && chmod 500 * && ~/scripts/setup $ans 1"

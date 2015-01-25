@@ -25,6 +25,7 @@ que=(
 	"user" 
 	"ntp"
 	"network"
+	"net-tools"
 	"httpd"
 	"mariadb"
 	"php"

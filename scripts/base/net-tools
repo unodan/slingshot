@@ -1,0 +1,45 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: net-tools
+# Purpose: NetTools is network toolbox. Scanning network tools are present, but also other multipurpose tools 
+#           that could be used by system administrators. 
+#
+###############################################################################
+#
+SERVICE=ntpd
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	[ "`is_on $SERVICE`" == "1" ] && { service $SERVICE stop; }
+
+	yum -y remove $PACKAGE; 
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE;
+	[ "$?" == "0" ] && {
+		for i in 0 1 2 3 4; do
+			sed -i "s/0.centos.pool.ntp.org/$i.north-america.pool.ntp.org/" /etc/ntp.conf
+		done;
+
+		for i in 0 1 2 3 4; do
+			echo -e "\n${FG_YELLOW}NOTICE: ${FG_GREEN}Synchronizing time with server (${FG_CYAN}$i.north-america.pool.ntp.org${FG_GREEN}).\n"
+			ntpdate $i.north-america.pool.ntp.org; rval=$?;
+			[ "$rval" == "0" ] && {
+				echo -e "\n${FG_WHITE}SUCCESS: ${FG_GREEN}Connected to and synchronized with time server (${FG_CYAN}$i.north-america.pool.ntp.org${FG_GREEN})."
+				break;
+			}
+		done;
+
+		cp -f /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
+		ln -sf ../usr/share/zoneinfo/America/Toronto /etc/localtime
+
+		[ "$rval" != "0" ] && { echo -e "\n${FG_RED}ERROR: ${FG_GREEN}Could not connected with time servers."; }
+
+		systemctl start $SERVICE;
+		systemctl enable $SERVICE;
+
+		echo -e "\n${FG_WHITE}"; date; 
+	}
+}
+footer
