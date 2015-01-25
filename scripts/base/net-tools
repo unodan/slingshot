@@ -2,7 +2,7 @@
 ###############################################################################
 #
 # Script: net-tools
-# Purpose: NetTools is network toolbox. Scanning network tools are present, but also other multipurpose tools 
+# Purpose: NetTools is a network toolbox. Scanning network tools are present, but also other multipurpose tools 
 #           that could be used by system administrators. 
 #
 ###############################################################################
