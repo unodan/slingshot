@@ -20,7 +20,7 @@ ans=$?
 
 	[[ -n $ip ]] && {
 		echo -e "\nThere is an entry in the local file \"~/.ssh/known_hosts\" with the IP address ($INET_IP)."
-		while : ; do
+		while :; do
 			echo -e
 			read -p "This entry must be updated, continue (y/n)? " reply
 			reply=${reply:0:1}; char=${reply,,}
@@ -39,7 +39,7 @@ ans=$?
 }
 
 [ -f ~/.ssh/id_rsa.pub ] && {
-	while : ; do
+	while :; do
 		echo
 		read -p "The RSA key file \"~/.ssh/id_rsa\" already exists, would you like to overwrite it (y/n)? " reply
 		reply=${reply:0:1}; 
