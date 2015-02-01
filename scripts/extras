@@ -24,7 +24,8 @@ que=(
 	"awstats"
 	"webmin"
 	"phpmyadmin"
-	"wordpress"
+	"wordpress"	
+	"ImageMagick"
 );
  
 [ "$action" == "installer" ] && { action=$1; packages="${que[@]}"; } || { packages="$@"; }
