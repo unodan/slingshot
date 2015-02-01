@@ -1,0 +1,21 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: template
+# Purpose: Install ImageMagick ImageMagick-devel.
+#
+###############################################################################
+#
+
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove  "ImageMagick ImageMagick-devel";
+	pecl uninstall imagick;
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install "ImageMagick ImageMagick-devel";
+	echo extension=imagick.so >> /etc/php.ini
+	echo /usr/lib64/php/modules | pecl install imagick;
+}
+footer
