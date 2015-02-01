@@ -1,0 +1,17 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: libjpeg-turbo-utils
+# Purpose: .
+#
+###############################################################################
+#
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE; 
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE;
+}
+footer

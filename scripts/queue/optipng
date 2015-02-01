@@ -1,0 +1,17 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: optipng
+# Purpose: A simple template to be used as a starting point for new modules.
+#
+###############################################################################
+#
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	yum -y remove $PACKAGE; 
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	yum -y install $PACKAGE; 
+}
+footer

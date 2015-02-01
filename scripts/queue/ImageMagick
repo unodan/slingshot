@@ -1,12 +1,11 @@
 #!/bin/bash
 ###############################################################################
 #
-# Script: template
+# Script: ImageMagick
 # Purpose: Install ImageMagick ImageMagick-devel.
 #
 ###############################################################################
 #
-
 header
 [[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
 	yum -y remove  "ImageMagick ImageMagick-devel";

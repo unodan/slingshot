@@ -26,6 +26,8 @@ que=(
 	"phpmyadmin"
 	"wordpress"	
 	"ImageMagick"
+	"libjpeg-turbo-utils"
+	"optipng"
 );
  
 [ "$action" == "installer" ] && { action=$1; packages="${que[@]}"; } || { packages="$@"; }
