@@ -9,7 +9,7 @@
 SERVICE=
 header
 [[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
-	#yum -y remove $PACKAGE; 
+	echo "TODO!!!"; 
 }
 
 [[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
