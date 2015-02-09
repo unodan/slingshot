@@ -21,9 +21,5 @@ header
 	wget http://pkgs.repoforge.org/gifsicle/$PACKAGE
 
 	rpm -Uvh $PACKAGE
-
-	makdir $WP_INSTALL_DIR/wp-content/ewww/
-	chmod 775. $WP_INSTALL_DIR/wp-content/ewww
-	chown dan. $WP_INSTALL_DIR/wp-content/ewww
 }
 footer
