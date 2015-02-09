@@ -1,0 +1,25 @@
+#!/bin/bash
+###############################################################################
+#
+# Script: gifsicle
+# Purpose: .
+#
+###############################################################################
+#
+SERVICE=
+header
+[[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
+	#yum -y remove $PACKAGE; 
+}
+
+[[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
+	wget http://pkgs.repoforge.org/gifsicle/
+	
+	line=`cat index.html | grep 'CentOS' | tail -n 1`
+	PACKAGE=`echo ${line#*"href=\""} | cut -f1 -d'"'`
+
+	wget http://pkgs.repoforge.org/gifsicle/$PACKAGE
+
+	rpm -Uvh $PACKAGE
+}
+footer

@@ -28,6 +28,7 @@ que=(
 	"ImageMagick"
 	"libjpeg-turbo-utils"
 	"optipng"
+	"gifsicle"
 );
  
 [ "$action" == "installer" ] && { action=$1; packages="${que[@]}"; } || { packages="$@"; }
