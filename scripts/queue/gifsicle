@@ -9,7 +9,7 @@
 SERVICE=
 header
 [[ $(($ACTION&$REMOVE)) == $REMOVE ]] && { 
-	echo "TODO!!!"; 
+	echo "TO-DO!"; 
 }
 
 [[ $(($ACTION&$INSTALL)) == $INSTALL ]] && { 
