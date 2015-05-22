@@ -4,7 +4,7 @@
 # Script: settings
 # AUTHOR_EMAIL=danhuckson@gmail.com 
 # Purpose: Set runtime variables needed for the various scripts. 
-#           These variables must be set before the install script is run.
+#   These variables must be set before the install script is run.
 #
 ###############################################################################
 #
