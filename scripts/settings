@@ -14,7 +14,7 @@
 SCRIPTS=~/scripts
 
 # Local machine IP
-LOCAL_IP=xxx.xxx.xxx.xx 
+LOCAL_IP=xxx.xxx.xxx.xxx
 
 # Server time zone.
 TIME_ZONE="America/Toronto"
